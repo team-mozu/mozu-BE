@@ -1,8 +1,8 @@
 import { Controller, Get, Inject, Injectable, Param } from '@nestjs/common';
 import { ArticleReadDocumentation } from './document/article.read.documentation';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
-import { ArticleReadService } from 'src/application/article/article.read.service';
-import { ResponseArticleForm } from './dto/response/response.article.form';
+import { ResponseArticleForm } from './form/response/response.article.form';
+import { ArticleReadService } from '../application/article.read.service';
 
 @Controller('/article')
 @Injectable()

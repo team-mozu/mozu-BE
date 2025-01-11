@@ -1,11 +1,9 @@
 import { Body, Controller, Delete, Get, Inject, Injectable, Param, Post } from '@nestjs/common';
-import { ArticleReadDocumentation } from './document/article.read.documentation';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
-import { ArticleReadService } from 'src/application/article/article.read.service';
 import { ArticleWriteDocumentation } from './document/article.write.documentation';
-import { ArticleWriteService } from 'src/application/article/article.write.service';
-import { RequestArticleForm } from './dto/request/request.article.form';
-import { RequestArticleFormMapper } from './dto/request/request.article.form.mapper';
+import { RequestArticleForm } from './form/request/request.article.form';
+import { RequestArticleFormMapper } from './form/request/request.article.form.mapper';
+import { ArticleWriteService } from '../application/article.write.service';
 
 @Controller('/article')
 @Injectable()

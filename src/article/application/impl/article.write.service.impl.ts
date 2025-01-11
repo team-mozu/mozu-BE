@@ -1,7 +1,7 @@
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { Inject, Injectable } from '@nestjs/common';
-import { ArticleDomainWriter } from 'src/domain/article/article.domain.writer';
 import { ArticleWriteService } from '../article.write.service';
+import { ArticleDomainWriter } from 'src/article/domain/article.domain.writer';
 
 @Injectable()
 export class ArticleWriteServiceImpl implements ArticleWriteService {

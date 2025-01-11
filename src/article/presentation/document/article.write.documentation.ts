@@ -1,5 +1,5 @@
 import { ArticleDTO } from 'src/common/data/article/article.dto';
-import { RequestArticleForm } from '../dto/request/request.article.form';
+import { RequestArticleForm } from '../form/request/request.article.form';
 
 export interface ArticleWriteDocumentation {
     create(createArticleDTO: RequestArticleForm): Promise<ArticleDTO>;
