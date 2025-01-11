@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './infrastructure/database.config';
-import { ArticleModule } from './common/module/article.module';
+import { PresentationModule } from './presentation/presentation.module';
 
 @Module({
     imports: [
@@ -11,7 +11,7 @@ import { ArticleModule } from './common/module/article.module';
             imports: [ConfigModule],
             useClass: TypeOrmConfigService
         }),
-        ArticleModule
+        PresentationModule
     ],
     controllers: [],
     providers: []
