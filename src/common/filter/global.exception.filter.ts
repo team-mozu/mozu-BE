@@ -1,29 +1,34 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
-import { Request, Response } from 'express';
+import {
+    ArgumentsHost,
+    Catch,
+    ExceptionFilter,
+    HttpException,
+    Inject,
+    InternalServerErrorException,
+    Logger
+} from '@nestjs/common';
 
-@Catch()
-export class GlobalExceptionFilter implements ExceptionFilter {
-    catch(exception: unknown, host: ArgumentsHost): void {
+@Catch(HttpException)
+export class HttpExceptionFilter<Error> implements ExceptionFilter {
+    constructor(@Inject(Logger) private readonly logger: Logger) {}
+
+    catch(exception: Error, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
-        const request = ctx.getRequest<Request>();
-        const response = ctx.getResponse<Response>();
+        const req = ctx.getRequest();
+        const res = ctx.getResponse();
 
-        let status = HttpStatus.INTERNAL_SERVER_ERROR;
-        let message = 'Internal Server Error';
-        if (exception instanceof HttpException) {
-            status = exception.getStatus();
-            message = exception.message;
-        } else {
-            console.error(exception);
-        }
+        if (!(exception instanceof HttpException))
+            exception = new InternalServerErrorException() as any;
 
-        const resposneBody = {
-            statusCode: status,
-            message: message,
-            timestamp: new Date().toISOString(),
-            path: request.path
-        };
+        this.logger.warn(
+            `${req.originalUrl} : ${(exception as HttpException).getStatus()} "${(exception as HttpException).message}"`
+        );
+        // <priority>[timestamp] [hostname] [processname] [message]
 
-        response.status(status).json(resposneBody);
+        return res.status((exception as HttpException).getStatus()).json({
+            errCode: (exception as HttpException).getStatus(),
+            errMsg: (exception as HttpException).message,
+            url: req.originalUrl
+        });
     }
 }
