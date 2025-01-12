@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './infrastructure/database.config';
 import { ArticleModule } from './article/article.module';
+import { MozuLoggerModule } from './common/logger/mozu.logger.module';
 
 @Module({
     imports: [
@@ -11,7 +12,8 @@ import { ArticleModule } from './article/article.module';
             imports: [ConfigModule],
             useClass: TypeOrmConfigService
         }),
-        ArticleModule
+        ArticleModule,
+        MozuLoggerModule
     ],
     controllers: [],
     providers: []
