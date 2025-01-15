@@ -21,7 +21,7 @@ export class ArticleEntity {
 
     @Column('varchar', {
         name: 'ART_IMG',
-        length: 200,
+        length: 255,
         nullable: true,
         default: '<!!>추후에 스켈레톤 UI url 추가 되어야 함<!!>'
     })
@@ -45,7 +45,7 @@ export class ArticleEntity {
         name: string,
         description: string,
         image: string,
-        createdAt?: string,
+        createdAt: string,
         deleteYN?: boolean
     ) {
         this.title = name;
