@@ -1,9 +1,22 @@
-import { Body, Controller, Delete, Get, Inject, Injectable, Param, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Inject,
+    Injectable,
+    Param,
+    Post,
+    UploadedFile,
+    UseInterceptors
+} from '@nestjs/common';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ArticleWriteDocumentation } from './document/article.write.documentation';
 import { RequestArticleForm } from './form/request/request.article.form';
 import { RequestArticleFormMapper } from './form/request/request.article.form.mapper';
 import { ArticleWriteService } from '../application/article.write.service';
+import { MozuLogger } from 'src/common/logger/mozu.logger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/article')
 @Injectable()
@@ -15,20 +28,26 @@ export class ArticleWriteAdapter implements ArticleWriteDocumentation {
     ) {}
 
     @Post('/create')
-    async create(@Body() form: RequestArticleForm): Promise<ArticleDTO> {
-        const internalDTO = await this.requestArticleFormMapper.toDTO(form);
-
-        return await this.writeService.create(internalDTO);
-    }
-
-    @Post('/update/:id')
-    async update(
-        @Param('id') articleId: string,
-        @Body() form: RequestArticleForm
+    @UseInterceptors(FileInterceptor('image'))
+    async create(
+        @Body() form: RequestArticleForm,
+        @UploadedFile() file: Express.Multer.File
     ): Promise<ArticleDTO> {
         const internalDTO = await this.requestArticleFormMapper.toDTO(form);
 
-        return await this.writeService.update(internalDTO, +articleId);
+        return await this.writeService.create(internalDTO, file);
+    }
+
+    @Post('/update/:id')
+    @UseInterceptors(FileInterceptor('image'))
+    async update(
+        @Param('id') articleId: string,
+        @Body() form: RequestArticleForm,
+        @UploadedFile() file: Express.Multer.File
+    ): Promise<ArticleDTO> {
+        const internalDTO = await this.requestArticleFormMapper.toDTO(form);
+
+        return await this.writeService.update(+articleId, internalDTO, file);
     }
 
     @Delete('/delete/:id')
@@ -36,11 +55,3 @@ export class ArticleWriteAdapter implements ArticleWriteDocumentation {
         return await this.writeService.delete(+articleId);
     }
 }
-
-/**
- * 기사 API 쓰기 목록
- *
- * 1. 추가하기 [ 완료 ]
- * 2. 수정하기 [ 완료 ]
- * 2. 삭제하기 == 숨김처리
- */
