@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ArticleDomainReader } from '../article.domain.reader';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ArticleDomainWriter } from '../article.domain.writer';
@@ -6,19 +6,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
 import { ArticleDomainMapper } from './article.domain.mapper';
+import { ArticleChecker } from './article.checker';
+import { S3Adapter } from 'src/common/thirdparty/s3.adapter';
 
 @Injectable()
 export class ArticleRepository implements ArticleDomainReader, ArticleDomainWriter {
     constructor(
         @InjectRepository(ArticleEntity)
         private readonly typeormRepository: Repository<ArticleEntity>,
-        private readonly mapper: ArticleDomainMapper
+        private readonly mapper: ArticleDomainMapper,
+        private readonly checker: ArticleChecker,
+        private readonly s3Adapter: S3Adapter
     ) {}
 
     async findByArticleId(articleId: number): Promise<ArticleDTO> {
         const article = await this.typeormRepository.findOneBy({
-            id: articleId
+            id: articleId,
+            deleteYN: false
         });
+
+        this.checker.existValidate(article, articleId);
 
         return await this.mapper.toDomain(article);
     }
@@ -36,42 +43,75 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         return articleList;
     }
 
-    async save(articleDTO: ArticleDTO): Promise<ArticleDTO> {
-        const entity = await this.mapper.toEntity(articleDTO);
+    async save(articleDTO: ArticleDTO, file: Express.Multer.File): Promise<ArticleDTO> {
+        let image: string;
+
+        if (!file) {
+            image = await this.s3Adapter.getImageUrl('내 로고.png');
+        } else {
+            await this.s3Adapter.uploadImage(file.originalname, file.buffer);
+
+            image = await this.s3Adapter.getImageUrl(file.originalname);
+        }
+
+        const imageAddDTO = {
+            ...articleDTO,
+            image: image
+        };
+
+        const entity = await this.mapper.toEntity(imageAddDTO);
+
+        this.checker.formValidate(entity);
+
         const saveEntity = await this.typeormRepository.save(entity);
 
         return await this.mapper.toDomain(saveEntity);
     }
 
-    async update(articleDTO: ArticleDTO): Promise<ArticleDTO> {
+    async update(
+        articleId: number,
+        articleDTO: ArticleDTO,
+        file: Express.Multer.File
+    ): Promise<ArticleDTO> {
         const pastArticle = await this.typeormRepository.findOneBy({
-            id: articleDTO.id
+            id: articleId,
+            deleteYN: false
         });
 
-        if (!pastArticle) {
-            // 에러처리 진행 잘못 된 아이디 일경우
+        this.checker.existValidate(pastArticle, articleId);
+
+        const updatedEntity = await this.typeormRepository.create({
+            ...pastArticle,
+            ...articleDTO,
+            id: articleId,
+            createdAt: pastArticle.createdAt,
+            deleteYN: false
+        });
+
+        if (!file) {
+            updatedEntity.image = await this.s3Adapter.getImageUrl('내 로고.png');
+        } else {
+            await this.s3Adapter.uploadImage(file.originalname, file.buffer);
+
+            updatedEntity.image = await this.s3Adapter.getImageUrl(file.originalname);
         }
-        articleDTO.createDate = pastArticle.createdAt;
 
-        const entity = await this.mapper.toEntity(articleDTO);
+        await this.typeormRepository.save(updatedEntity);
 
-        const saveEntity = await this.typeormRepository.update(pastArticle.id, entity);
-
-        const updatedEntity = await this.typeormRepository.findOneBy({
-            id: pastArticle.id
+        const newArticle = await this.typeormRepository.findOneBy({
+            id: articleId
         });
 
-        return await this.mapper.toDomain(updatedEntity);
+        return await this.mapper.toDomain(newArticle);
     }
 
     async delete(articleId: number): Promise<void> {
         const entity = await this.typeormRepository.findOneBy({
-            id: articleId
+            id: articleId,
+            deleteYN: false
         });
 
-        if (!entity) {
-            // 에러처리 진행 잘못 된 아이디 일경우
-        }
+        this.checker.existValidate(entity, articleId);
 
         entity.deleteYN = true;
 
