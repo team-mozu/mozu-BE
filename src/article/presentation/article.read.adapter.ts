@@ -24,11 +24,3 @@ export class ArticleReadAdapter implements ArticleReadDocumentation {
         return new ResponseArticleForm(articleList);
     }
 }
-
-/**
- * 기사 API 읽기 목록
- *
- * 1. 목록 조회 [완료]
- * 2. 상세 조회 [완료]
- *    - 줄 것들 : id, title, 생성 일자,
- */
