@@ -10,24 +10,21 @@ export class ArticleWriteServiceImpl implements ArticleWriteService {
         private readonly writer: ArticleDomainWriter
     ) {}
 
-    async create(articleDTO: ArticleDTO): Promise<ArticleDTO> {
-        const article = await new ArticleDTO(
-            articleDTO.id,
-            articleDTO.title,
-            articleDTO.description,
-            articleDTO.image,
-            this.getDate(),
-            articleDTO.deleteYN
-        );
+    async create(articleDTO: ArticleDTO, file: Express.Multer.File): Promise<ArticleDTO> {
+        const article = {
+            ...articleDTO,
+            createDate: this.getDate()
+        };
 
-        return await this.writer.save(article);
+        return await this.writer.save(article, file);
     }
 
-    async update(articleDTO: ArticleDTO, articleId: number): Promise<ArticleDTO> {
-        const aritcle: ArticleDTO = articleDTO;
-        aritcle.id = articleId;
-
-        return await this.writer.update(aritcle);
+    async update(
+        articleId: number,
+        articleDTO: ArticleDTO,
+        file: Express.Multer.File
+    ): Promise<ArticleDTO> {
+        return await this.writer.update(articleId, articleDTO, file);
     }
 
     async delete(articleId: number): Promise<void> {
