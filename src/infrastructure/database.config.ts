@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { ArticleEntity } from 'src/article/domain/persistence/article.entity';
+import { ClassEntity } from 'src/class/domain/class/persistence/class.entity';
+import { ClassArticleEntity } from 'src/class/domain/classArticle/persistence/classArticle.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -14,10 +17,11 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             username: this.configService.get<string>('DB_NAME'),
             password: this.configService.get<string>('DB_PASSWORD'),
             database: this.configService.get<string>('DB_DATABASE'),
-            entities: ['/dist/domain/persistence/*.entity{.ts,.js}'], //'dist/**/**/*.entity.{ts,js}' <- 이것처럼 .entity에 해당하는 파일들 자동으로 다 업로드 되게 할 예정
+            entities: [ArticleEntity, ClassEntity, ClassArticleEntity],
             synchronize: true, // production 단계에서 false로 변경
             autoLoadEntities: true,
-            logging: true
+            logging: true,
+            driver: true
         };
     }
 }

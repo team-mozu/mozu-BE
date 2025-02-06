@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ClassArticleEntity } from 'src/class/domain/classArticle/persistence/classArticle.entity';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('TB_ART')
 export class ArticleEntity {
@@ -40,6 +41,9 @@ export class ArticleEntity {
         nullable: false
     })
     createdAt: string;
+
+    @OneToMany(() => ClassArticleEntity, (classes) => classes.article)
+    classes: ClassArticleEntity[];
 
     constructor(
         name: string,
