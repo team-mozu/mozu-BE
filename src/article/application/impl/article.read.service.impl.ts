@@ -14,7 +14,7 @@ export class ArticleReadServiceImpl implements ArticleReadService {
         return await this.reader.findByArticleId(articleId);
     }
 
-    async getArticleList(): Promise<ArticleDTO[]> {
-        return await this.reader.findArticleList();
+    async getArticleList(organId: number): Promise<ArticleDTO[]> {
+        return await this.reader.findArticleList(organId);
     }
 }

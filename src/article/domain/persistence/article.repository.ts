@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleDomainReader } from '../article.domain.reader';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ArticleDomainWriter } from '../article.domain.writer';
@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
 import { ArticleDomainMapper } from './article.domain.mapper';
-import { ArticleChecker } from './article.checker';
 import { S3Adapter } from 'src/common/thirdparty/s3.adapter';
 
 @Injectable()
@@ -15,7 +14,6 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         @InjectRepository(ArticleEntity)
         private readonly typeormRepository: Repository<ArticleEntity>,
         private readonly mapper: ArticleDomainMapper,
-        private readonly checker: ArticleChecker,
         private readonly s3Adapter: S3Adapter
     ) {}
 
@@ -25,17 +23,25 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
             deleteYN: false
         });
 
-        this.checker.existValidate(article, articleId);
+        if (!article) {
+            throw new NotFoundException(
+                `해당하는 id(${articleId})의 기사가 존재하지 않거나 삭제 되었습니다.`
+            );
+        }
 
         return await this.mapper.toDomain(article);
     }
 
-    async findArticleList(): Promise<ArticleDTO[]> {
+    async findArticleList(organId: number): Promise<ArticleDTO[]> {
         const entities = await this.typeormRepository.find({
             where: {
-                deleteYN: false
+                deleteYN: false,
+                organ: {
+                    id: organId
+                }
             }
         });
+
         const articleList = await Promise.all(
             entities.map((entity) => this.mapper.toDomain(entity))
         );
@@ -43,7 +49,11 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         return articleList;
     }
 
-    async save(articleDTO: ArticleDTO, file: Express.Multer.File): Promise<ArticleDTO> {
+    async save(
+        articleDTO: ArticleDTO,
+        file: Express.Multer.File,
+        organId: number
+    ): Promise<ArticleDTO> {
         let image: string;
 
         if (!file) {
@@ -61,9 +71,16 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
 
         const entity = await this.mapper.toEntity(imageAddDTO);
 
-        this.checker.formValidate(entity);
+        const createEntity = await this.typeormRepository.create({
+            ...entity,
+            organ: {
+                id: organId
+            }
+        });
 
-        const saveEntity = await this.typeormRepository.save(entity);
+        console.log(createEntity);
+
+        const saveEntity = await this.typeormRepository.save(createEntity);
 
         return await this.mapper.toDomain(saveEntity);
     }
@@ -71,14 +88,22 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
     async update(
         articleId: number,
         articleDTO: ArticleDTO,
-        file: Express.Multer.File
+        file: Express.Multer.File,
+        organId: number
     ): Promise<ArticleDTO> {
         const pastArticle = await this.typeormRepository.findOneBy({
             id: articleId,
-            deleteYN: false
+            deleteYN: false,
+            organ: {
+                id: organId
+            }
         });
 
-        this.checker.existValidate(pastArticle, articleId);
+        if (!pastArticle) {
+            throw new NotFoundException(
+                `해당하는 id(${articleId})의 기사가 존재하지 않거나 삭제 되었습니다.`
+            );
+        }
 
         const updatedEntity = await this.typeormRepository.create({
             ...pastArticle,
@@ -105,13 +130,20 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         return await this.mapper.toDomain(newArticle);
     }
 
-    async delete(articleId: number): Promise<void> {
+    async delete(articleId: number, organId: number): Promise<void> {
         const entity = await this.typeormRepository.findOneBy({
             id: articleId,
-            deleteYN: false
+            deleteYN: false,
+            organ: {
+                id: organId
+            }
         });
 
-        this.checker.existValidate(entity, articleId);
+        if (!entity) {
+            throw new NotFoundException(
+                `해당하는 id(${articleId})의 기사가 존재하지 않거나 삭제 되었습니다.`
+            );
+        }
 
         entity.deleteYN = true;
 
