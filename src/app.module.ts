@@ -6,6 +6,7 @@ import { ArticleModule } from './article/article.module';
 import { MozuLoggerModule } from './common/logger/mozu.logger.module';
 import { ClassModule } from './class/class.module';
 import { OrganModule } from './organ/organ.module';
+import { ItemModule } from './item/item.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { OrganModule } from './organ/organ.module';
         ArticleModule,
         ClassModule,
         OrganModule,
+        ItemModule,
         MozuLoggerModule
     ],
     controllers: [],
