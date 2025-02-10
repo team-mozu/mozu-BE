@@ -1,5 +1,13 @@
 import { ClassArticleEntity } from 'src/class/domain/classArticle/persistence/classArticle.entity';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity('TB_ART')
 export class ArticleEntity {
@@ -44,6 +52,9 @@ export class ArticleEntity {
 
     @OneToMany(() => ClassArticleEntity, (classes) => classes.article)
     classes: ClassArticleEntity[];
+
+    @ManyToOne(() => OrganEntity, (organ) => organ.articles)
+    organ: OrganEntity;
 
     constructor(
         name: string,
