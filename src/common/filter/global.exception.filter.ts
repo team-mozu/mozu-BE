@@ -5,30 +5,50 @@ import {
     HttpException,
     Inject,
     InternalServerErrorException,
-    Logger
+    Logger,
+    HttpStatus
 } from '@nestjs/common';
 
 @Catch(HttpException)
-export class HttpExceptionFilter<Error> implements ExceptionFilter {
+export class HttpExceptionFilter implements ExceptionFilter {
     constructor(@Inject(Logger) private readonly logger: Logger) {}
 
-    catch(exception: Error, host: ArgumentsHost) {
+    catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const req = ctx.getRequest();
         const res = ctx.getResponse();
 
-        if (!(exception instanceof HttpException))
-            exception = new InternalServerErrorException() as any;
+        let status = exception.getStatus();
+        let exceptionResponse = exception.getResponse();
 
-        this.logger.warn(
-            `${req.originalUrl} : ${(exception as HttpException).getStatus()} "${(exception as HttpException).message}"`
-        );
-        // <priority>[timestamp] [hostname] [processname] [message]
+        let errDetails = null;
 
-        return res.status((exception as HttpException).getStatus()).json({
-            errCode: (exception as HttpException).getStatus(),
-            errMsg: (exception as HttpException).message,
+        if (
+            status === HttpStatus.BAD_REQUEST &&
+            typeof exceptionResponse === 'object' &&
+            'message' in exceptionResponse
+        ) {
+            errDetails = exceptionResponse['message'];
+        }
+
+        if (!(exception instanceof HttpException)) {
+            exception = new InternalServerErrorException();
+            status = exception.getStatus();
+            exceptionResponse = exception.getResponse();
+        }
+
+        this.logger.warn(`[${req.method}] ${req.originalUrl} : ${status} "${exception.message}"`);
+
+        const errorResponse: any = {
+            errCode: status,
+            errMsg: exception.message,
             url: req.originalUrl
-        });
+        };
+
+        if (errDetails) {
+            errorResponse.errDetails = errDetails;
+        }
+
+        return res.status(status).json(errorResponse);
     }
 }

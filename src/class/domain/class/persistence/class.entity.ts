@@ -3,10 +3,12 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn
 } from 'typeorm';
 import { ClassArticleEntity } from '../../classArticle/persistence/classArticle.entity';
+import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
 
 @Entity('TB_CLASS')
 export class ClassEntity {
@@ -65,6 +67,9 @@ export class ClassEntity {
         default: false
     })
     deleteYN: boolean;
+
+    @ManyToOne(() => OrganEntity, (organ) => organ.classes)
+    organ: OrganEntity;
 
     @OneToMany(() => ClassArticleEntity, (article) => article.class, { cascade: true, eager: true })
     classArticles: ClassArticleEntity[];
