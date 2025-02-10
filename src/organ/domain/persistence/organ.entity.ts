@@ -1,5 +1,6 @@
 import { ArticleEntity } from 'src/article/domain/persistence/article.entity';
 import { ClassEntity } from 'src/class/domain/class/persistence/class.entity';
+import { ItemEntity } from 'src/item/domain/persistence/item.entity';
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('TB_ORGAN')
@@ -28,13 +29,17 @@ export class OrganEntity {
     })
     password: string;
 
+    @OneToMany(() => ClassEntity, (classes) => classes.organ)
+    @JoinColumn({ name: 'CLASS_ID', referencedColumnName: 'id' })
+    classes: ClassEntity[];
+
     @OneToMany(() => ArticleEntity, (articles) => articles.organ)
     @JoinColumn({ name: 'ARTICLE_ID', referencedColumnName: 'id' })
     articles: ArticleEntity[];
 
-    @OneToMany(() => ClassEntity, (classes) => classes.organ)
-    @JoinColumn({ name: 'CLASS_ID', referencedColumnName: 'id' })
-    classes: ClassEntity[];
+    @OneToMany(() => ItemEntity, (items) => items.organ)
+    @JoinColumn({ name: 'ITEM_ID', referencedColumnName: 'id' })
+    items: ItemEntity[];
 
     constructor(name: string, code: string, password: string) {
         this.name = name;
