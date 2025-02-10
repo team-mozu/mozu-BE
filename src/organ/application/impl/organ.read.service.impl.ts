@@ -56,7 +56,7 @@ export class OrganReadServiceImpl implements OrganReadService {
 
         return await this.jwtService.sign(payload, {
             secret: this.configService.get<string>('JWT_ACCESS_SECRET_KEY'),
-            expiresIn: isRefreshToken ? 3600 : 300
+            expiresIn: isRefreshToken ? 36000 : 3600
         });
     }
 }
