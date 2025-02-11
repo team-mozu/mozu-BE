@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Injectable, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
 import { OrganReadService } from '../application/organ.read.service';
 import { OrganDTO } from '../common/data/organ.dto';
 import { RequestLoginForm } from './form/request/request.login.form';
@@ -9,7 +9,6 @@ import { Permission } from 'src/common/decorator/authority.decorator';
 import { Authority } from 'src/common/data/Role';
 
 @Controller('/organ')
-@Injectable()
 export class OrganReadAdapter {
     constructor(
         @Inject('read_impl')
