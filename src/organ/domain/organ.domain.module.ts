@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { ConfigModule } from '@nestjs/config';
 import { OrganEntity } from './persistence/organ.entity';
 import { OrganRepository } from './persistence/organ.repository';

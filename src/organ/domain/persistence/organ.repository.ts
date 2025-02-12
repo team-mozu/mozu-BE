@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrganDomainReader } from '../organ.domain.reader';
 import { OrganDomainWriter } from '../organ.domain.writer';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,6 +19,10 @@ export class OrganRepository implements OrganDomainReader, OrganDomainWriter {
         const organ = await this.typeormRepository.findOneBy({
             id: organId
         });
+
+        if (!organ) {
+            throw new NotFoundException(`해당하는 id(${organId})의 기관이 존재하지 않습니다.`);
+        }
 
         return await this.mapper.toDomain(organ);
     }
