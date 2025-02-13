@@ -2,9 +2,7 @@ import {
     Body,
     Controller,
     Delete,
-    Get,
     Inject,
-    Injectable,
     Param,
     Post,
     UploadedFile,
@@ -23,7 +21,6 @@ import { Permission } from 'src/common/decorator/authority.decorator';
 import { Authority } from 'src/common/data/Role';
 
 @Controller('/item')
-@Injectable()
 export class ItemWrtieAdapter {
     constructor(
         @Inject('write_impl')
