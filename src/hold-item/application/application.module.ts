@@ -3,8 +3,8 @@ import { HoldItemReadServiceImpl } from './impl/hold-item.read.service.impl';
 import { HoldItemWriteServiceImpl } from './impl/hold-item.write.service.impl';
 import { HoldItemDomainModule } from '../domain/domain.module';
 
-const HOLD_ITEM_READ_SERVICE = { provide: 'hold_item_read_impl', useClass: HoldItemReadServiceImpl };
-const HOLD_ITEM_WRITE_SERVICE = { provide: 'hold_item_write_impl', useClass: HoldItemWriteServiceImpl };
+const HOLD_ITEM_READ_SERVICE = { provide: 'read_impl', useClass: HoldItemReadServiceImpl };
+const HOLD_ITEM_WRITE_SERVICE = { provide: 'write_impl', useClass: HoldItemWriteServiceImpl };
 
 @Module({
     imports: [HoldItemDomainModule],
