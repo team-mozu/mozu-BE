@@ -50,7 +50,7 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
         let image: string;
 
         if (!file) {
-            image = await this.s3Adapter.getImageUrl('내 로고.png');
+            image = await this.s3Adapter.getImageUrl('종목 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
@@ -105,7 +105,7 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
         });
 
         if (!file) {
-            updatedEntity.logo = await this.s3Adapter.getImageUrl('내 로고.png');
+            updatedEntity.logo = await this.s3Adapter.getImageUrl('종목 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
