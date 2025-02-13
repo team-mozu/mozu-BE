@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 @Entity('HOLD_ITEM')
 export class HoldItemEntity {
     @PrimaryColumn('varchar',{
-        name: 'HOLD_ITEM',
+        name: 'HOLD_ITEM_ID',
         length: 40,
         nullable: false
     })
