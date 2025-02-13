@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Injectable, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { ItemReadService } from '../application/item.read.service';
 import { ItemDTO } from '../common/data/item.dto';
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
@@ -8,7 +8,6 @@ import { UserID } from 'src/common/decorator/user.decorator';
 import { ResponseItemForm } from './form/response/response.item.form';
 
 @Controller('/item')
-@Injectable()
 export class ItemReadAdapter {
     constructor(
         @Inject('read_impl')
