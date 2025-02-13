@@ -18,7 +18,7 @@ import { ItemModule } from './item/item.module';
         }),
         ArticleModule,
         MozuLoggerModule,
-        HoldItemModule
+        HoldItemModule,
         ClassModule,
         OrganModule,
         ItemModule,
