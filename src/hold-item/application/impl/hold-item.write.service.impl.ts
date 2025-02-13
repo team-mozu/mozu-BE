@@ -6,7 +6,7 @@ import { HoldItemDTO } from "src/common/data/hold-item/hold-item.dto";
 @Injectable()
 export class HoldItemWriteServiceImpl implements HoldItemWriteService {
     constructor(
-        @Inject('holdItemRepository') 
+        @Inject('repository') 
         private readonly writer: HoldItemDomainWriter
     ) {}
 
