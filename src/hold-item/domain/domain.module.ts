@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { HoldItemDomainMapper } from './persistence/hold-item.domain.mapper';
 import { HoldItemChecker } from './persistence/hold-item.checker';
 
-const HOLD_ITEM_REPOSITORY = { provide: 'holdItemRepository', useClass: HoldItemRepository};
+const HOLD_ITEM_REPOSITORY = { provide: 'repository', useClass: HoldItemRepository};
 const HOLD_ITEM_ENTITY = TypeOrmModule.forFeature([HoldItemEntity]);
 
 @Module({
@@ -14,7 +14,6 @@ const HOLD_ITEM_ENTITY = TypeOrmModule.forFeature([HoldItemEntity]);
     providers: [
         HOLD_ITEM_REPOSITORY,
         HoldItemDomainMapper,
-        HoldItemRepository,
         HoldItemChecker
     ],
     exports: [HOLD_ITEM_REPOSITORY, HoldItemDomainMapper, HoldItemRepository]
