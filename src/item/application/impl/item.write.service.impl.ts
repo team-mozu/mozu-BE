@@ -1,6 +1,4 @@
-import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { Inject, Injectable } from '@nestjs/common';
-import { ArticleDomainWriter } from 'src/article/domain/article.domain.writer';
 import { ItemWrtieService } from '../item.write.service';
 import { ItemDomainWriter } from 'src/item/domain/item.domain.writer';
 import { ItemDTO } from 'src/item/common/data/item.dto';
