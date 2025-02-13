@@ -6,12 +6,12 @@ import { HoldItemDTO } from "src/common/data/hold-item/hold-item.dto";
 @Injectable()
 export class HoldItemReadServiceImpl implements HoldItemReadService {
     constructor(
-        @Inject('holdItemRepository')
+        @Inject('repository')
         private readonly reader: HoldItemDomainReader
     ) {}
 
     async findByHoldItemId(holdItemId: string): Promise<HoldItemDTO> {
-        return await this.reader.findByHoldItemId(holdItemId);
+        return this.reader.findByHoldItemId(holdItemId);
     }
 
     async findByHoldItemList(classTeamId: string): Promise<HoldItemDTO[]> {
