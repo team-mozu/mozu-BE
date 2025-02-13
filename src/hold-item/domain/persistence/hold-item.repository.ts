@@ -23,7 +23,7 @@ export class HoldItemRepository implements HoldItemDomainWriter, HoldItemDomainR
 
         this.checker.existValidate(holdItem, holdItemId);
 
-        return await this.mapper.toDomain(holdItem, holdItemId);
+        return await this.mapper.toDomain(holdItem);
     }
 
     async findByHoldItemList(classTeamId: string): Promise<HoldItemDTO[]> {
@@ -36,7 +36,7 @@ export class HoldItemRepository implements HoldItemDomainWriter, HoldItemDomainR
         }
 
         const holdItemList = await Promise.all(
-            holdItemEntities.map((entity) => this.mapper.toDomain(entity, classTeamId))
+            holdItemEntities.map((entity) => this.mapper.toDomain(entity))
         );
 
         return holdItemList;
@@ -50,6 +50,6 @@ export class HoldItemRepository implements HoldItemDomainWriter, HoldItemDomainR
 
         const savedEntity = await this.typeormRepository.save(entity);
 
-        return await this.mapper.toDomain(savedEntity, holdItemDTO.classTeamId);
+        return await this.mapper.toDomain(savedEntity);
     }
 }
