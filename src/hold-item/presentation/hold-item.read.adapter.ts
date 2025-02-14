@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Inject, Injectable, Param, Query } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Injectable, Param } from "@nestjs/common";
 import { HoldItemReadService } from "../application/hold-item.read.service";
 import { HoldItemDTO } from "src/common/data/hold-item/hold-item.dto";
 
 @Controller("/hold-item")
+@Injectable()
 export class HoldItemReadAdapter{
     constructor(
         @Inject('read_impl')
@@ -14,8 +15,8 @@ export class HoldItemReadAdapter{
         return await this.holdItemReadService.findByHoldItemId(holdItemId);
     }
 
-    @Get(":classTeamId")
-    async getHoldItemList(@Param("classTeamId") classTeamId: string): Promise<HoldItemDTO[]> {
+    @Get()
+    async getHoldItemList(@Body("classTeamId") classTeamId: string): Promise<HoldItemDTO[]> {
         return await this.holdItemReadService.findByHoldItemList(classTeamId);
     }
 }
