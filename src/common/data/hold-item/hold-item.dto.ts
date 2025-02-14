@@ -8,7 +8,7 @@ export class HoldItemDTO {
     profitNum: number;
 
     constructor(
-        holdItemId: string,
+        id: string,
         classTeamId: string,
         itemName: string,
         itemCnt: number,
@@ -17,7 +17,7 @@ export class HoldItemDTO {
         profitNum: number,
 
     ) {
-        this.id = holdItemId;
+        this.id = id;
         this.classTeamId = classTeamId;
         this.itemName = itemName;
         this.itemCnt = itemCnt;
