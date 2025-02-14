@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Injectable, Param } from "@nestjs/common";
+import { Body, Controller, Get, Inject, Injectable, Param, Query } from "@nestjs/common";
 import { HoldItemReadService } from "../application/hold-item.read.service";
 import { HoldItemDTO } from "src/common/data/hold-item/hold-item.dto";
 
@@ -15,8 +15,8 @@ export class HoldItemReadAdapter{
         return await this.holdItemReadService.findByHoldItemId(holdItemId);
     }
 
-    @Get()
-    async getHoldItemList(@Body("classTeamId") classTeamId: string): Promise<HoldItemDTO[]> {
+    @Get("class-team/:classTeamId")
+    async getHoldItemList(@Param("classTeamId") classTeamId: string): Promise<HoldItemDTO[]> {
         return await this.holdItemReadService.findByHoldItemList(classTeamId);
     }
 }
