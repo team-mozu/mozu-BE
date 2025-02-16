@@ -1,5 +1,6 @@
+import { ClassItemEntity } from 'src/class/domain/persistence/entity/classItem.entity';
 import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('TB_ITEM')
 export class ItemEntity {
@@ -87,6 +88,9 @@ export class ItemEntity {
 
     @ManyToOne(() => OrganEntity, (organ) => organ.items)
     organ: OrganEntity;
+
+    @OneToMany(() => ClassItemEntity, (classes) => classes.item)
+    classes: ClassItemEntity[];
 
     constructor(
         name: string,

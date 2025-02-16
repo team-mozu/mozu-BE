@@ -1,9 +1,9 @@
-import { ClassArticleDTO } from '../common/data/class.article.dto';
+import { ClassArticleDTO } from 'src/class/common/data/class.article.dto';
+import { ClassItemDTO } from 'src/class/common/data/class.item.dto';
 import { ClassDTO } from '../common/data/class.dto';
-import { ClassItemDTO } from '../common/data/class.item.dto';
 
-export interface ClassWrtieService {
-    create(
+export interface ClassDomainWrtier {
+    save(
         organId: number,
         classDTO: ClassDTO,
         classItemDTO: ClassItemDTO[],

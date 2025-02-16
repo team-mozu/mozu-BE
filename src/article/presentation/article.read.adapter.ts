@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Injectable, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ResponseArticleForm } from './form/response/response.article.form';
 import { ArticleReadService } from '../application/article.read.service';
@@ -26,5 +26,12 @@ export class ArticleReadAdapter {
         const articleList = await this.readService.getArticleList(+id);
 
         return new ResponseArticleForm(articleList);
+    }
+
+    @Post('validate')
+    async validateItems(@Body() body: { organId: number; ids: number[] }): Promise<Boolean> {
+        await this.readService.validateArticles(body.organId, body.ids);
+
+        return true;
     }
 }

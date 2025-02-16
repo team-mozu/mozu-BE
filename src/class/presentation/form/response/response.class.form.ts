@@ -1,5 +1,6 @@
 import { ClassArticleDTO } from 'src/class/common/data/class.article.dto';
 import { ClassDTO } from 'src/class/common/data/class.dto';
+import { ClassItemDTO } from 'src/class/common/data/class.item.dto';
 
 export class ResponseClassForm {
     classes: ResponseClass[];
@@ -36,9 +37,10 @@ export class ResponseDetailClass {
     createdAt: string;
     deleteYN: boolean;
 
-    classArticles: ClassArticleDTO[];
+    classArticles: ResponseClassArticle[];
+    classItems: ResponseClassItem[];
 
-    constructor(classDTO: ClassDTO, classArticles: ClassArticleDTO[]) {
+    constructor(classDTO: ClassDTO, classItems: ClassItemDTO[], classArticles: ClassArticleDTO[]) {
         this.id = classDTO.id;
         this.name = classDTO.name;
         this.maxInvDeg = classDTO.maxInvDeg;
@@ -48,11 +50,40 @@ export class ResponseDetailClass {
         this.starYN = classDTO.starYN;
         this.createdAt = classDTO.createdAt;
         this.deleteYN = classDTO.deleteYN;
-        this.classArticles = classArticles;
+
+        const articlesByInvDeg: { [key: number]: number[] } = {};
+        classArticles.forEach((article) => {
+            if (!articlesByInvDeg[article.invDeg]) {
+                articlesByInvDeg[article.invDeg] = [];
+            }
+            articlesByInvDeg[article.invDeg].push(article.articleId);
+        });
+
+        this.classArticles = [];
+        for (let i = 1; i <= this.maxInvDeg; i++) {
+            this.classArticles.push({
+                invDeg: i,
+                articles: articlesByInvDeg[i] || []
+            });
+        }
+
+        this.classItems = classItems.map(
+            (classItem) => new ResponseClassItem(classItem.itemId, classItem.money)
+        );
     }
 }
 
 export class ResponseClassArticle {
     invDeg: number;
     articles: number[];
+}
+
+export class ResponseClassItem {
+    itemId: number;
+    money: number[];
+
+    constructor(itemId: number, money: number[]) {
+        this.itemId = itemId;
+        this.money = money;
+    }
 }
