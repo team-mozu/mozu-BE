@@ -1,5 +1,5 @@
 import { ArticleEntity } from 'src/article/domain/persistence/article.entity';
-import { ClassEntity } from 'src/class/domain/class/persistence/class.entity';
+import { ClassEntity } from 'src/class/domain/persistence/entity/class.entity';
 import { ItemEntity } from 'src/item/domain/persistence/item.entity';
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
