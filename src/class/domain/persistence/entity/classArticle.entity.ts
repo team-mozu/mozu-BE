@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { ArticleEntity } from 'src/article/domain/persistence/article.entity';
-import { ClassEntity } from '../../class/persistence/class.entity';
+import { ClassEntity } from './class.entity';
 
 @Entity('TB_CLASS_ART')
 export class ClassArticleEntity {
