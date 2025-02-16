@@ -17,8 +17,4 @@ export class ItemReadServiceImpl implements ItemReadService {
     async getItemList(organId: number): Promise<ItemDTO[]> {
         return await this.reader.findItemList(organId);
     }
-
-    async validateItems(organId: number, ids: number[]): Promise<void> {
-        return await this.reader.validateItems(organId, ids);
-    }
 }

@@ -1,136 +1,37 @@
-import {
-    HttpException,
-    Inject,
-    Injectable,
-    InternalServerErrorException,
-    NotFoundException
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClassWrtieService } from '../class.write.service';
 import { ClassDTO } from 'src/class/common/data/class.dto';
+import { ClassDomainWrtier } from 'src/class/domain/class/class.domain.writer';
+import { ClassArticleDomainWriter } from 'src/class/domain/classArticle/classArticle.domain.writer';
 import { ClassArticleDTO } from 'src/class/common/data/class.article.dto';
-import { ClassItemDTO } from 'src/class/common/data/class.item.dto';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
-import { ConfigService } from '@nestjs/config';
-import { ClassDomainWrtier } from 'src/class/domain/class.domain.writer';
 
 @Injectable()
 export class ClassWriteServiceImpl implements ClassWrtieService {
     constructor(
-        @Inject('repository')
+        @Inject('class_repository')
         private readonly classWriter: ClassDomainWrtier,
-        private readonly httpService: HttpService,
-        private readonly configService: ConfigService
+        @Inject('classArticle_repository')
+        private readonly classArticleWriter: ClassArticleDomainWriter
     ) {}
 
     async create(
-        organId: number,
         classDTO: ClassDTO,
-        classItemDTO: ClassItemDTO[],
         classArticleDTO: ClassArticleDTO[]
-    ): Promise<{
-        classDTO: ClassDTO;
-        classItemDTO: ClassItemDTO[];
-        classArticleDTO: ClassArticleDTO[];
-    }> {
-        const itemIds = classItemDTO.map((item) => item.itemId);
-        const articleIds: number[] = classArticleDTO.map((article) => article.articleId);
-
-        try {
-            await Promise.all([
-                firstValueFrom(
-                    this.httpService.post(
-                        `${this.configService.get<string>('SERVER_HOST')}/article/validate`,
-                        {
-                            organId: organId,
-                            ids: articleIds
-                        }
-                    )
-                ),
-                firstValueFrom(
-                    this.httpService.post(
-                        `${this.configService.get<string>('SERVER_HOST')}/item/validate`,
-                        {
-                            organId: organId,
-                            ids: itemIds
-                        }
-                    )
-                )
-            ]);
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                throw new NotFoundException(`${error.response.data.errMsg}`);
-            } else {
-                throw new InternalServerErrorException(`야야 이거 서버가 잘못했다...`);
-            }
-        }
-
+    ): Promise<{ classDTO: ClassDTO; classArticleDTO: ClassArticleDTO[] }> {
         const classData = {
             ...classDTO,
             createdAt: this.getDate()
         };
 
-        return await this.classWriter.save(organId, classData, classItemDTO, classArticleDTO);
-    }
+        const savedClass = await this.classWriter.save(classData);
 
-    async update(
-        organId: number,
-        classId: number,
-        classDTO: ClassDTO,
-        classItemDTO: ClassItemDTO[],
-        classArticleDTO: ClassArticleDTO[]
-    ): Promise<{
-        classDTO: ClassDTO;
-        classItemDTO: ClassItemDTO[];
-        classArticleDTO: ClassArticleDTO[];
-    }> {
-        const itemIds = classItemDTO.map((item) => item.itemId);
-        const articleIds: number[] = classArticleDTO.map((article) => article.articleId);
+        const classArticles: ClassArticleDTO[] = classArticleDTO.map((article) => {
+            return new ClassArticleDTO(savedClass.id, article.articleId, article.invDeg);
+        });
 
-        try {
-            await Promise.all([
-                firstValueFrom(
-                    this.httpService.post(
-                        `${this.configService.get<string>('SERVER_HOST')}/article/validate`,
-                        {
-                            organId: organId,
-                            ids: articleIds
-                        }
-                    )
-                ),
-                firstValueFrom(
-                    this.httpService.post(
-                        `${this.configService.get<string>('SERVER_HOST')}/item/validate`,
-                        {
-                            organId: organId,
-                            ids: itemIds
-                        }
-                    )
-                )
-            ]);
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                throw new NotFoundException(`${error.response.data.errMsg}`);
-            } else {
-                throw new InternalServerErrorException(`야야 이거 서버가 잘못했다...`);
-            }
-        }
+        const savedClassArticles = await this.classArticleWriter.saveAll(classArticles);
 
-        return await this.classWriter.update(
-            organId,
-            classId,
-            classDTO,
-            classItemDTO,
-            classArticleDTO
-        );
-    }
-
-    async changeStarYN(organId: number, classId: number): Promise<void> {
-        return await this.classWriter.changeStarYN(organId, classId);
-    }
-
-    async delete(organId: number, classId: number): Promise<void> {
-        return await this.classWriter.delete(organId, classId);
+        return { classDTO: savedClass, classArticleDTO: savedClassArticles };
     }
 
     private getDate(): string {

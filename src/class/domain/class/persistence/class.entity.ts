@@ -1,7 +1,14 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BeforeInsert,
+    Column,
+    CreateDateColumn,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from 'typeorm';
+import { ClassArticleEntity } from '../../classArticle/persistence/classArticle.entity';
 import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
-import { ClassItemEntity } from './classItem.entity';
-import { ClassArticleEntity } from './classArticle.entity';
 
 @Entity('TB_CLASS')
 export class ClassEntity {
@@ -27,7 +34,7 @@ export class ClassEntity {
     })
     curInvDeg: number;
 
-    @Column('bigint', {
+    @Column('int', {
         name: 'BAS_MONEY',
         nullable: false
     })
@@ -66,9 +73,6 @@ export class ClassEntity {
 
     @OneToMany(() => ClassArticleEntity, (article) => article.class, { cascade: true, eager: true })
     classArticles: ClassArticleEntity[];
-
-    @OneToMany(() => ClassItemEntity, (item) => item.class, { cascade: true, eager: true })
-    classItems: ClassItemEntity[];
 
     constructor(
         name: string,

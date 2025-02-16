@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { ItemReadService } from '../application/item.read.service';
 import { ItemDTO } from '../common/data/item.dto';
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
@@ -28,12 +28,5 @@ export class ItemReadAdapter {
         const articleList = await this.readService.getItemList(+id);
 
         return new ResponseItemForm(articleList);
-    }
-
-    @Post('validate')
-    async validateItems(@Body() body: { organId: number; ids: number[] }): Promise<Boolean> {
-        await this.readService.validateItems(body.organId, body.ids);
-
-        return true;
     }
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleDomainReader } from '../article.domain.reader';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ArticleDomainWriter } from '../article.domain.writer';
@@ -47,21 +47,6 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         );
 
         return articleList;
-    }
-
-    async validateArticles(organId: number, ids: number[]): Promise<void> {
-        const validArticles = await this.typeormRepository
-            .createQueryBuilder('article')
-            .where('article.organId = :organId', { organId })
-            .andWhere('article.deleteYN = :deleteYN', { deleteYN: false })
-            .andWhere('article.id IN (:...ids)', { ids })
-            .getMany();
-
-        if (validArticles.length !== ids.length) {
-            const validIds = validArticles.map((article) => article.id);
-            const notFoundIds = ids.filter((id) => !validIds.includes(id));
-            throw new NotFoundException(`[${notFoundIds}] 해당 기사 id들이 유효하지 않습니다.`);
-        }
     }
 
     async save(

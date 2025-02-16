@@ -46,21 +46,6 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
         return itemList;
     }
 
-    async validateItems(organId: number, ids: number[]): Promise<void> {
-        const validItems = await this.typeormRepository
-            .createQueryBuilder('item')
-            .where('item.organId = :organId', { organId })
-            .andWhere('item.deleteYN = :deleteYN', { deleteYN: false })
-            .andWhere('item.id IN (:...ids)', { ids })
-            .getMany();
-
-        if (validItems.length !== ids.length) {
-            const validIds = validItems.map((item) => item.id);
-            const notFoundIds = ids.filter((id) => !validIds.includes(id));
-            throw new NotFoundException(`[${notFoundIds}] 해당 종목 id들이 유효하지 않습니다.`);
-        }
-    }
-
     async save(itemDTO: ItemDTO, file: Express.Multer.File, organId: number): Promise<ItemDTO> {
         let image: string;
 
