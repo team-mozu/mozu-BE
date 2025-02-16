@@ -1,4 +1,4 @@
-import { ClassArticleEntity } from 'src/class/domain/classArticle/persistence/classArticle.entity';
+import { ClassArticleEntity } from 'src/class/domain/persistence/entity/classArticle.entity';
 import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
 import {
     Column,

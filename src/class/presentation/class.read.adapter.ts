@@ -1,24 +1,36 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
-import { ClassDTO } from '../common/data/class.dto';
-import { RequestClassFormMapper } from './form/request/request.class.form.mapper';
+import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { ClassReadService } from '../application/class.read.service';
-import { ResponseClassForm } from './form/response/response.class.form';
+import { ResponseClassForm, ResponseDetailClass } from './form/response/response.class.form';
+import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
+import { Permission } from 'src/common/decorator/authority.decorator';
+import { Authority } from 'src/common/data/Role';
+import { UserID } from 'src/common/decorator/user.decorator';
 
 @Controller('/class')
-export default class ClassReadAdapter {
+export class ClassReadAdapter {
     constructor(
         @Inject('read_impl')
         private readonly readService: ClassReadService
     ) {}
 
     @Get('/:id')
-    async getByClassID(@Param('id') classId): Promise<ClassDTO> {
-        return await this.readService.getByClassId(+classId);
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async getByClassID(@Param('id') classId, @UserID() id: string): Promise<ResponseDetailClass> {
+        const response = await this.readService.getByClassId(+classId, +id);
+
+        return new ResponseDetailClass(
+            response.classDTO,
+            response.classItemDTO,
+            response.classArticleDTO
+        );
     }
 
     @Get()
-    async getClassList(): Promise<ResponseClassForm> {
-        const classList = await this.readService.getClassList();
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async getClassList(@UserID() id: string): Promise<ResponseClassForm> {
+        const classList = await this.readService.getClassList(+id);
 
         return new ResponseClassForm(classList);
     }
