@@ -119,7 +119,11 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
             deleteYN: false
         });
 
-        if (!file) {
+        console.log(itemDTO);
+
+        if (itemDTO.logo == '') {
+            updatedEntity.logo = pastItem.logo;
+        } else if (!file) {
             updatedEntity.logo = await this.s3Adapter.getImageUrl('종목 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
