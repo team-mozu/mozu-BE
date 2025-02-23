@@ -49,8 +49,8 @@ export class ItemWrtieAdapter {
     async update(
         @Param('id') itemId: string,
         @Body() form: RequestItemForm,
-        @UploadedFile() file: Express.Multer.File,
-        @UserID() id: string
+        @UserID() id: string,
+        @UploadedFile() file?: Express.Multer.File
     ): Promise<ItemDTO> {
         const internalDTO = await this.requestItemFormMapper.toDTO(form);
 
