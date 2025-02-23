@@ -48,8 +48,8 @@ export class ArticleWriteAdapter {
     async update(
         @Param('id') articleId: string,
         @Body() form: RequestArticleForm,
-        @UploadedFile() file: Express.Multer.File,
-        @UserID() id: string
+        @UserID() id: string,
+        @UploadedFile() file?: Express.Multer.File
     ): Promise<ArticleDTO> {
         const internalDTO = await this.requestArticleFormMapper.toDTO(form);
 
