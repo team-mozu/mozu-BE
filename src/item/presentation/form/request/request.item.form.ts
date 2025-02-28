@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class RequestItemForm {
     @IsNotEmpty({ message: '종목 이름(name)은 필수 입력 항목입니다.' })
@@ -30,6 +30,9 @@ export class RequestItemForm {
     @IsNotEmpty({ message: '종목 당기 순이익(netProfit)은 필수 입력 항목입니다.' })
     netProfit: number;
 
+    @IsOptional()
+    logo?: string;
+
     constructor(
         name: string,
         info: string,
@@ -39,7 +42,8 @@ export class RequestItemForm {
         profit: number,
         profitOG: number,
         profitBen: number,
-        netProfit: number
+        netProfit: number,
+        logo?: string
     ) {
         this.name = name;
         this.info = info;
@@ -50,5 +54,6 @@ export class RequestItemForm {
         this.profitOG = profitOG;
         this.profitBen = profitBen;
         this.netProfit = netProfit;
+        this.logo = logo;
     }
 }

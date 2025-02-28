@@ -7,7 +7,7 @@ export class RequestItemFormMapper {
             null,
             form.name,
             form.info,
-            null,
+            form.logo,
             +form.money,
             +form.debt,
             +form.capital,

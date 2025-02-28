@@ -72,7 +72,7 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         let image: string;
 
         if (!file) {
-            image = await this.s3Adapter.getImageUrl('내 로고.png');
+            image = await this.s3Adapter.getImageUrl('기사 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
@@ -128,8 +128,12 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
             deleteYN: false
         });
 
-        if (!file) {
-            updatedEntity.image = await this.s3Adapter.getImageUrl('내 로고.png');
+        console.log(articleDTO);
+
+        if (articleDTO.image == '') {
+            updatedEntity.image = pastArticle.image;
+        } else if (!file) {
+            updatedEntity.image = await this.s3Adapter.getImageUrl('기사 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
