@@ -7,6 +7,7 @@ import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
 import { Permission } from 'src/common/decorator/authority.decorator';
 import { Authority } from 'src/common/data/Role';
 import { UserID } from 'src/common/decorator/user.decorator';
+import { ResponseClassCodeForm } from './form/response/response.classCode.form';
 
 @Controller('/class')
 export class ClassWrtieAdapter {
@@ -79,6 +80,32 @@ export class ClassWrtieAdapter {
     async delete(@Param('id') classId: string, @UserID() id: string): Promise<void> {
         return await this.writeService.delete(+id, +classId);
     }
+
+    @Post('/start/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async startClass(
+        @Param('id') classId: string,
+        @UserID() id: string
+    ): Promise<ResponseClassCodeForm> {
+        const classCode = await this.writeService.startClass(+id, +classId);
+
+        return new ResponseClassCodeForm(classCode);
+    }
+
+    @Post('/stop/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async stopClass(@Param('id') classId: string, @UserID() id: string): Promise<void> {
+        return await this.writeService.stopClass(+id, +classId);
+    }
+
+    @Post('/next/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async classNextInvDeg(@Param('id') classId: string, @UserID() id: string): Promise<void> {
+        return await this.writeService.nextInvDeg(+id, +classId);
+    }
 }
 
 /**
@@ -97,58 +124,17 @@ export class ClassWrtieAdapter {
  */
 
 /*
+[작성 API]
+{기관용} 수업 시작 API - [POST]
+[INPUT] -> 수업 ID(Param), Token
+[OUTPUT] -> 수업 참여 코드
 
-{
-    "className": "2024 중학생 모의주식 투자 수업",
-    "baseMoney": 5000000,
-    "maxInvDeg": 5,
-    "classItems": [
-        {
-            "id": 1003,
-            "money": [49000, 50000, 47000, 53000, 55000]
-        },
-        {
-            "id": 1007,
-            "money": [39000, 20000, 17000, 43000, 35000]
-        },
-        {
-            "id": 1015,
-            "money": [59000, 60000, 49000, 83000, 95000]
-        },
-        {
-            "id": 1017,
-            "money": [59000, 60000, 49000, 83000, 95000]
-        },
-        {
-            "id": 1018,
-            "money": [59000, 60000, 49000, 83000, 95000]
-        }
-    ],
-    "classArticles": [
-        {
-            "invDeg": 1,
-            "articles": []
-        },
-        {
-            "invDeg": 2,
-            "articles": [2]
-        },
-        {
-            "invDeg": 3,
-            "articles": [3]
-        },
-        {
-            "invDeg": 4,
-            "articles": [3, 4]
-        },
-        {
-            "invDeg": 5,
-            "articles": [2, 3, 4, 5]
-        }
-    ]
-}
+{기관용} 수업 종료 API - [POST]
+[INPUT] -> 수업 ID(Param), Token
+[OUTPUT] -> 없음
 
-1. 입력한 종목과 기사가 유효한지 검사해야함. 그 뒤 수업 생성.
-2. 
-
+{기관용} 수업 투자 차수 진행 API - [POST]
+[INPUT] -> 수업 ID(Param), Token
+[OUTPUT] ->  없음
+학생 클라이언트로 이벤트 발생    
 */

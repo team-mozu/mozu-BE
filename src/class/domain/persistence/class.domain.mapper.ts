@@ -21,6 +21,7 @@ export class ClassDomainMapper {
             entity.baseMoney,
             entity.classNum,
             entity.starYN,
+            entity.progressYN,
             entity.createdAt,
             entity.deleteYN
         );
@@ -34,6 +35,7 @@ export class ClassDomainMapper {
             domain.baseMoney,
             domain.classNum,
             domain.starYN,
+            domain.progressYN,
             domain.createdAt,
             domain.deleteYN
         );
@@ -42,7 +44,7 @@ export class ClassDomainMapper {
     async toClassItemDomain(entity: ClassItemEntity): Promise<ClassItemDTO> {
         if (!entity) return null;
 
-        return new ClassItemDTO(entity.classId, entity.itemId, entity.money);
+        return new ClassItemDTO(entity.classId, entity.itemId, entity.money, entity.item);
     }
 
     async toClassItemEntity(domain: ClassItemDTO, classId: number): Promise<ClassItemEntity> {
@@ -52,7 +54,7 @@ export class ClassDomainMapper {
     async toClassArticleDomain(entity: ClassArticleEntity): Promise<ClassArticleDTO> {
         if (!entity) return null;
 
-        return new ClassArticleDTO(entity.classId, entity.articleId, entity.invDeg);
+        return new ClassArticleDTO(entity.classId, entity.articleId, entity.invDeg, entity.article);
     }
 
     async toClassArticleEntity(

@@ -119,8 +119,6 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
             deleteYN: false
         });
 
-        console.log(itemDTO);
-
         if (itemDTO.logo == '') {
             updatedEntity.logo = pastItem.logo;
         } else if (!file) {

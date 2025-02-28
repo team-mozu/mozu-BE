@@ -15,6 +15,8 @@ export class ArticleReadAdapter {
     ) {}
 
     @Get('/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN, Authority.STUDENT])
     async getByArticleID(@Param('id') articleId: string): Promise<ArticleDTO> {
         return await this.readService.getByArticleID(+articleId);
     }

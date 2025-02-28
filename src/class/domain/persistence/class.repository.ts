@@ -54,7 +54,7 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
                 deleteYN: false,
                 organ: { id: organId }
             },
-            relations: ['classItems', 'classArticles']
+            relations: ['classItems', 'classArticles', 'classItems.item', 'classArticles.article']
         });
 
         if (!existingClass) {
@@ -74,6 +74,195 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
                 )
             )
         };
+    }
+
+    async findClassByCode(classNum: number): Promise<ClassDTO> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                classNum: classNum,
+                deleteYN: false
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${classNum})의 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        return await this.mapper.toClassDomain(existingClass);
+    }
+
+    async findOrganClassArticles(classId: number, organId: number): Promise<ClassArticleDTO[]> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: {
+                    id: organId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: ['classArticles', 'classArticles.article']
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${classId})의 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        return await Promise.all(
+            existingClass.classArticles.map((classArticle) =>
+                this.mapper.toClassArticleDomain(classArticle)
+            )
+        );
+    }
+
+    async findOrganClassItems(classId: number, organId: number): Promise<ClassItemDTO[]> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: {
+                    id: organId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: ['classItems', 'classItems.item']
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${classId})의 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        return await Promise.all(
+            existingClass.classItems.map((classItem) => this.mapper.toClassItemDomain(classItem))
+        );
+    }
+
+    async findClassItemById(teamId: number, itemId: number): Promise<ClassItemDTO> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        const classItem = await this.classItemTypeormRepository.findOne({
+            where: {
+                classId: existingClass.id,
+                itemId: itemId
+            },
+            relations: ['item']
+        });
+
+        if (!classItem) {
+            throw new NotFoundException(`해당하는 id(${itemId})의 수업 종목이 존재하지 않습니다.`);
+        }
+
+        return await this.mapper.toClassItemDomain(classItem);
+    }
+
+    async validateItems(classId: number, ids: number[]): Promise<void> {
+        const validItems = await this.classItemTypeormRepository
+            .createQueryBuilder('classItems')
+            .where('classItems.classId = :classId', { classId })
+            .andWhere('classItems.itemId IN (:...ids)', { ids })
+            .getMany();
+
+        if (validItems.length !== ids.length) {
+            const validIds = validItems.map((item) => item.itemId);
+            const notFoundIds = ids.filter((id) => !validIds.includes(id));
+            throw new NotFoundException(`[${notFoundIds}] 해당 기사 id들이 유효하지 않습니다.`);
+        }
+    }
+
+    async findTeamClassArticles(teamId: number): Promise<ClassArticleDTO[]> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        const invDegClassArticles = await this.classArticleTypeormRepository.find({
+            where: {
+                classId: existingClass.id,
+                invDeg: existingClass.curInvDeg
+            },
+            relations: ['article']
+        });
+
+        return await Promise.all(
+            invDegClassArticles.map((classArticle) =>
+                this.mapper.toClassArticleDomain(classArticle)
+            )
+        );
+    }
+
+    async findTeamClassItems(teamId: number): Promise<ClassItemDTO[]> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: ['classItems', 'classItems.item']
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        return await Promise.all(
+            existingClass.classItems.map((classItem) => this.mapper.toClassItemDomain(classItem))
+        );
+    }
+
+    async findByTeamId(teamId: number): Promise<ClassDTO> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: ['classItems', 'classItems.item']
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.`
+            );
+        }
+
+        return await this.mapper.toClassDomain(existingClass);
     }
 
     async save(
@@ -111,15 +300,22 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
 
         await this.classTypeormRepository.save(savedClassEntity);
 
+        const newClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: savedClassEntity.id,
+                deleteYN: false,
+                organ: { id: organId }
+            },
+            relations: ['classItems', 'classArticles', 'classItems.item', 'classArticles.article']
+        });
+
         return {
-            classDTO: await this.mapper.toClassDomain(savedClassEntity),
+            classDTO: await this.mapper.toClassDomain(newClass),
             classItemDTO: await Promise.all(
-                savedClassEntity.classItems.map((item) => this.mapper.toClassItemDomain(item))
+                newClass.classItems.map((item) => this.mapper.toClassItemDomain(item))
             ),
             classArticleDTO: await Promise.all(
-                savedClassEntity.classArticles.map((article) =>
-                    this.mapper.toClassArticleDomain(article)
-                )
+                newClass.classArticles.map((article) => this.mapper.toClassArticleDomain(article))
             )
         };
     }
@@ -169,15 +365,22 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
 
         const savedClassEntity = await this.classTypeormRepository.save(updatedClass);
 
+        const newClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: savedClassEntity.id,
+                deleteYN: false,
+                organ: { id: organId }
+            },
+            relations: ['classItems', 'classArticles', 'classItems.item', 'classArticles.article']
+        });
+
         return {
-            classDTO: await this.mapper.toClassDomain(savedClassEntity),
+            classDTO: await this.mapper.toClassDomain(newClass),
             classItemDTO: await Promise.all(
-                savedClassEntity.classItems.map((item) => this.mapper.toClassItemDomain(item))
+                newClass.classItems.map((item) => this.mapper.toClassItemDomain(item))
             ),
             classArticleDTO: await Promise.all(
-                savedClassEntity.classArticles.map((article) =>
-                    this.mapper.toClassArticleDomain(article)
-                )
+                newClass.classArticles.map((article) => this.mapper.toClassArticleDomain(article))
             )
         };
     }
@@ -224,5 +427,71 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
         await this.classTypeormRepository.save(existingClass);
 
         return;
+    }
+
+    async startClass(organId: number, classId: number, classNum: number): Promise<void> {
+        const existingClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId }
+            },
+            relations: ['organ']
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                `해당하는 id(${classId})의 수업이 존재하지 않거나 삭제 되었습니다.`
+            );
+        }
+
+        existingClass.classNum = classNum;
+        existingClass.progressYN = true;
+        existingClass.curInvDeg = 0;
+
+        await this.classTypeormRepository.save(existingClass);
+    }
+
+    async stopClass(organId: number, classId: number): Promise<void> {
+        const progressClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId },
+                progressYN: true
+            }
+        });
+
+        if (!progressClass) {
+            throw new NotFoundException(
+                `해당하는 id(${classId})의 수업이 존재하지 않거나 진행 중인 수업이 아닙니다.`
+            );
+        }
+
+        progressClass.classNum = null;
+        progressClass.progressYN = false;
+        progressClass.curInvDeg = 0;
+
+        await this.classTypeormRepository.save(progressClass);
+    }
+
+    async nextInvDeg(organId: number, classId: number): Promise<number> {
+        const progressClass = await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId },
+                progressYN: true
+            }
+        });
+
+        if (!progressClass) {
+            throw new NotFoundException(
+                `해당하는 id(${classId})의 수업이 존재하지 않거나 진행 중인 수업이 아닙니다.`
+            );
+        }
+
+        progressClass.curInvDeg++;
+
+        await this.classTypeormRepository.save(progressClass);
+
+        return progressClass.curInvDeg;
     }
 }

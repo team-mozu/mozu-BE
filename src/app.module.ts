@@ -4,13 +4,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './infrastructure/database.config';
 import { ArticleModule } from './article/article.module';
 import { MozuLoggerModule } from './common/logger/mozu.logger.module';
-import { HoldItemModule } from './hold-item/hold-item.module';
 import { ClassModule } from './class/class.module';
 import { OrganModule } from './organ/organ.module';
 import { ItemModule } from './item/item.module';
 import { JwtModule } from '@nestjs/jwt';
 import { GlobalJwtModule } from './common/module/jwt.module';
 import { GlobalConfigModule } from './common/module/config.module';
+import { TeamModule } from './team/team.module';
 
 @Module({
     imports: [
@@ -22,10 +22,10 @@ import { GlobalConfigModule } from './common/module/config.module';
         }),
         ArticleModule,
         MozuLoggerModule,
-        HoldItemModule,
         ClassModule,
         OrganModule,
         ItemModule,
+        TeamModule,
         MozuLoggerModule
     ],
     controllers: [],
