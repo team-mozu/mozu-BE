@@ -12,4 +12,16 @@ export interface ClassReadService {
         classArticleDTO: ClassArticleDTO[];
     }>;
     getClassList(organId: number): Promise<ClassDTO[]>;
+    sseConnect(classId: number, organId: number, res: Response);
+    getByClassNum(classNum: number): Promise<ClassDTO>;
+    validateItems(classId: number, ids: number[]): Promise<void>;
+
+    getOrganClassArticles(classId: number, organId: number): Promise<ClassArticleDTO[]>;
+    getOrganClassItems(classId: number, organId: number): Promise<ClassItemDTO[]>;
+
+    //학생용
+    getClassItemById(teamId: number, itemId: number): Promise<ClassItemDTO>;
+    getTeamClassArticles(teamId: number): Promise<ClassArticleDTO[]>;
+    getTeamClassItems(teamId: number): Promise<ClassItemDTO[]>;
+    getByTeamId(teamId: number): Promise<ClassDTO>;
 }

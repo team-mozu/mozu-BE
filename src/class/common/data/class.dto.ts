@@ -6,8 +6,9 @@ export class ClassDTO {
     maxInvDeg: number;
     curInvDeg: number;
     baseMoney: number;
-    classNum: string;
+    classNum: number;
     starYN: boolean;
+    progressYN: boolean;
     createdAt: string;
     deleteYN: boolean;
 
@@ -17,8 +18,9 @@ export class ClassDTO {
         maxInvDeg: number,
         curInvDeg: number,
         baseMoney: number,
-        classNum: string,
+        classNum: number,
         starYN: boolean,
+        progressYN: boolean,
         createdAt: string,
         deleteYN: boolean
     ) {
@@ -28,6 +30,7 @@ export class ClassDTO {
         this.baseMoney = baseMoney;
         this.classNum = classNum;
         this.starYN = starYN;
+        this.progressYN = progressYN;
         this.createdAt = createdAt;
         this.deleteYN = deleteYN;
     }

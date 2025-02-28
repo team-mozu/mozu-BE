@@ -13,6 +13,10 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { ClassDomainWrtier } from 'src/class/domain/class.domain.writer';
+import { randomInt, randomUUID } from 'crypto';
+import { SseService } from 'src/common/sse/sse.service';
+import { EventType } from 'src/common/sse/event.type';
+import { EventClassNextInvStartForm } from 'src/common/sse/event.form';
 
 @Injectable()
 export class ClassWriteServiceImpl implements ClassWrtieService {
@@ -20,7 +24,8 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
         @Inject('repository')
         private readonly classWriter: ClassDomainWrtier,
         private readonly httpService: HttpService,
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly sseService: SseService
     ) {}
 
     async create(
@@ -133,6 +138,27 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
         return await this.classWriter.delete(organId, classId);
     }
 
+    async startClass(organId: number, classId: number): Promise<number> {
+        const classNum = this.generateClassCode();
+
+        await this.classWriter.startClass(organId, classId, classNum);
+
+        return classNum;
+    }
+
+    async stopClass(organId: number, classId: number): Promise<void> {
+        return await this.classWriter.stopClass(organId, classId);
+    }
+
+    async nextInvDeg(organId: number, classId: number): Promise<void> {
+        const invDeg = await this.classWriter.nextInvDeg(organId, classId);
+
+        await this.sseService.sendToAllStudents(
+            EventType.CLASS_NEXT_INV_START,
+            new EventClassNextInvStartForm(classId, invDeg)
+        );
+    }
+
     private getDate(): string {
         const date = new Date();
         const options = {
@@ -141,5 +167,9 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
         const koreanDate = new Intl.DateTimeFormat('en-CA', options).format(date);
 
         return koreanDate;
+    }
+
+    private generateClassCode(): number {
+        return randomInt(1111111, 9999999);
     }
 }

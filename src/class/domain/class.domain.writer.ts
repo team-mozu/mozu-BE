@@ -26,4 +26,7 @@ export interface ClassDomainWrtier {
     }>;
     changeStarYN(organId: number, classId: number): Promise<void>;
     delete(organId: number, classId: number): Promise<void>;
+    startClass(organId: number, classId: number, classNum: number): Promise<void>;
+    stopClass(organId: number, classId: number): Promise<void>;
+    nextInvDeg(organId: number, classId: number): Promise<number>;
 }

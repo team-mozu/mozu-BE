@@ -17,17 +17,18 @@ export class RequestClassFormMapper {
             form.baseMoney,
             undefined,
             false,
+            false,
             null,
             false
         );
 
         const classItemDTO: ClassItemDTO[] = form.classItems.map(
-            (item) => new ClassItemDTO(null, item.id, item.money)
+            (item) => new ClassItemDTO(null, item.id, item.money, null)
         );
 
         const classArticleDTO: ClassArticleDTO[] = form.classArticles.flatMap((articleGroup) =>
             articleGroup.articles.map(
-                (articleId) => new ClassArticleDTO(null, articleId, articleGroup.invDeg)
+                (articleId) => new ClassArticleDTO(null, articleId, articleGroup.invDeg, null)
             )
         );
 

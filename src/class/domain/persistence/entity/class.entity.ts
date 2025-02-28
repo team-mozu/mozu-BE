@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'ty
 import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
 import { ClassItemEntity } from './classItem.entity';
 import { ClassArticleEntity } from './classArticle.entity';
+import { TeamEntity } from 'src/team/domain/persistence/team.entity';
 
 @Entity('TB_CLASS')
 export class ClassEntity {
@@ -29,16 +30,19 @@ export class ClassEntity {
 
     @Column('bigint', {
         name: 'BAS_MONEY',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     baseMoney: number;
 
-    @Column('varchar', {
+    @Column('int', {
         name: 'CLASS_NUM',
-        length: 10,
         nullable: true
     })
-    classNum: string;
+    classNum: number;
 
     @Column('boolean', {
         name: 'STAR_YN',
@@ -46,6 +50,13 @@ export class ClassEntity {
         default: false
     })
     starYN: boolean;
+
+    @Column('boolean', {
+        name: 'PROG_YN',
+        nullable: false,
+        default: false
+    })
+    progressYN: boolean;
 
     @Column('char', {
         name: 'CRE_DT',
@@ -70,13 +81,17 @@ export class ClassEntity {
     @OneToMany(() => ClassItemEntity, (item) => item.class, { cascade: true, eager: true })
     classItems: ClassItemEntity[];
 
+    @OneToMany(() => TeamEntity, (teams) => teams.class, { cascade: true, eager: true })
+    teams: TeamEntity[];
+
     constructor(
         name: string,
         maxInvDeg: number,
         curInvDeg: number,
         baseMoney: number,
-        classNum: string,
+        classNum: number,
         starYN: boolean,
+        progressYN: boolean,
         createdAt: string,
         deleteYN: boolean
     ) {
@@ -86,6 +101,7 @@ export class ClassEntity {
         this.baseMoney = baseMoney;
         this.classNum = classNum;
         this.starYN = starYN;
+        this.progressYN = progressYN;
         this.createdAt = createdAt;
         this.deleteYN = deleteYN;
     }
