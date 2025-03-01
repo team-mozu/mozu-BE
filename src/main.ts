@@ -14,7 +14,9 @@ async function bootstrap() {
         })
     );
     app.enableCors({
-        origin: true,
+        origin: '*', // 모든 도메인 허용 (개발용)
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        allowedHeaders: '*',
         credentials: true
     });
 
