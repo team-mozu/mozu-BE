@@ -32,7 +32,9 @@ export class OrganReadAdapter {
     }
 
     @Get('/token/re-issue')
-    async tokenReissue(@Headers('rf-token') refreshToken: string): Promise<ResponseReissueForm> {
+    async tokenReissue(
+        @Headers('x-refresh-token') refreshToken: string
+    ): Promise<ResponseReissueForm> {
         const newToken = await this.readService.tokenReissue(refreshToken);
 
         return new ResponseReissueForm(newToken);
