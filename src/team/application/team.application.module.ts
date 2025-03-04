@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TeamReadServiceImpl } from './impl/team.read.service.impl';
-import { TeamWriteServiceImpl } from './impl/team.wrtie.service.impl';
+import { TeamWriteServiceImpl } from './impl/team.write.service.impl';
 import { TeamDomainModule } from '../domain/team.domain.module';
 import { HttpModule } from '@nestjs/axios';
 import { SseModule } from 'src/common/sse/sse.module';
