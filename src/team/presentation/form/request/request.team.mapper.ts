@@ -1,4 +1,4 @@
-import { RequestTeamForm } from './reqeust.team';
+import { RequestTeamForm } from './request.team';
 import { TeamDTO } from 'src/team/common/data/team.dto';
 import { RequestTeamOrderForm } from './request.team.order';
 import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
