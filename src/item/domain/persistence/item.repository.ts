@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { ItemDomainReader } from '../item.domain.reader';
 import { ItemDomainWriter } from '../item.domain.writer';
 import { ItemDTO } from 'src/item/common/data/item.dto';
+import { ClassItemEntity } from 'src/class/domain/persistence/entity/classItem.entity';
 
 @Injectable()
 export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
@@ -139,13 +140,13 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
     }
 
     async delete(itemId: number, organId: number): Promise<void> {
-        const entity = await this.typeormRepository.findOneBy({
-            id: itemId,
-            deleteYN: false,
-            organ: {
-                id: organId
-            }
-        });
+        const entity = await this.typeormRepository
+            .createQueryBuilder('item')
+            .leftJoinAndSelect('item.classes', 'classItem')
+            .where('item.id = :itemId', { itemId })
+            .andWhere('item.deleteYN = :deleteYN', { deleteYN: false })
+            .andWhere('item.organId = :organId', { organId })
+            .getOne();
 
         if (!entity) {
             throw new NotFoundException(
@@ -153,10 +154,14 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
             );
         }
 
+        await this.typeormRepository
+            .createQueryBuilder()
+            .delete()
+            .from(ClassItemEntity)
+            .where('itemId = :itemId', { itemId })
+            .execute();
+
         entity.deleteYN = true;
-
-        const deletedEntity = await this.typeormRepository.update(entity.id, entity);
-
-        return;
+        await this.typeormRepository.save(entity);
     }
 }
