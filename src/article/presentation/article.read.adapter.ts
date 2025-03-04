@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Inject,
+    Param,
+    ParseIntPipe,
+    Post,
+    UseGuards
+} from '@nestjs/common';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ResponseArticleForm } from './form/response/response.article.form';
 import { ArticleReadService } from '../application/article.read.service';
@@ -17,8 +26,8 @@ export class ArticleReadAdapter {
     @Get('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN, Authority.STUDENT])
-    async getByArticleID(@Param('id') articleId: string): Promise<ArticleDTO> {
-        return await this.readService.getByArticleID(+articleId);
+    async getByArticleID(@Param('id', ParseIntPipe) articleId: number): Promise<ArticleDTO> {
+        return await this.readService.getByArticleID(articleId);
     }
 
     @Get()
