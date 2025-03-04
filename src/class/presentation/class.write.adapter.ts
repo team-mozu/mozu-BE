@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Inject, Param, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Inject,
+    Param,
+    ParseIntPipe,
+    Post,
+    UseGuards
+} from '@nestjs/common';
 import { RequestClassFormMapper } from './form/request/request.class.form.mapper';
 import { RequestClassForm } from './form/request/request.class.form';
 import { ClassWrtieService } from '../application/class.write.service';
@@ -45,7 +54,7 @@ export class ClassWrtieAdapter {
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async update(
-        @Param('id') classId: string,
+        @Param('id', ParseIntPipe) classId: number,
         @Body() form: RequestClassForm,
         @UserID() id: string
     ): Promise<ResponseDetailClass> {
@@ -54,7 +63,7 @@ export class ClassWrtieAdapter {
 
         const response = await this.writeService.update(
             +id,
-            +classId,
+            classId,
             classDTO,
             classItemDTO,
             classArticleDTO
@@ -70,25 +79,28 @@ export class ClassWrtieAdapter {
     @Post('/star/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async updateStarYN(@Param('id') classId: string, @UserID() id: string): Promise<void> {
-        return await this.writeService.changeStarYN(+id, +classId);
+    async updateStarYN(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.changeStarYN(+id, classId);
     }
 
     @Delete('/delete/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async delete(@Param('id') classId: string, @UserID() id: string): Promise<void> {
-        return await this.writeService.delete(+id, +classId);
+    async delete(@Param('id', ParseIntPipe) classId: number, @UserID() id: string): Promise<void> {
+        return await this.writeService.delete(+id, classId);
     }
 
     @Post('/start/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async startClass(
-        @Param('id') classId: string,
+        @Param('id', ParseIntPipe) classId: number,
         @UserID() id: string
     ): Promise<ResponseClassCodeForm> {
-        const classCode = await this.writeService.startClass(+id, +classId);
+        const classCode = await this.writeService.startClass(+id, classId);
 
         return new ResponseClassCodeForm(classCode);
     }
@@ -96,15 +108,21 @@ export class ClassWrtieAdapter {
     @Post('/stop/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async stopClass(@Param('id') classId: string, @UserID() id: string): Promise<void> {
-        return await this.writeService.stopClass(+id, +classId);
+    async stopClass(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.stopClass(+id, classId);
     }
 
     @Post('/next/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async classNextInvDeg(@Param('id') classId: string, @UserID() id: string): Promise<void> {
-        return await this.writeService.nextInvDeg(+id, +classId);
+    async classNextInvDeg(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.nextInvDeg(+id, classId);
     }
 }
 

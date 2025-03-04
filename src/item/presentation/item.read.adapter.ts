@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Inject,
+    Param,
+    ParseIntPipe,
+    Post,
+    UseGuards
+} from '@nestjs/common';
 import { ItemReadService } from '../application/item.read.service';
 import { ItemDTO } from '../common/data/item.dto';
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
@@ -17,8 +26,8 @@ export class ItemReadAdapter {
     @Get('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN, Authority.STUDENT])
-    async getByItemID(@Param('id') itemId: string): Promise<ItemDTO> {
-        return await this.readService.getByItemId(+itemId);
+    async getByItemID(@Param('id', ParseIntPipe) itemId: number): Promise<ItemDTO> {
+        return await this.readService.getByItemId(itemId);
     }
 
     @Get()

@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Inject, Param, Post, Res, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Inject,
+    Param,
+    ParseIntPipe,
+    Post,
+    Res,
+    UseGuards
+} from '@nestjs/common';
 import { ClassReadService } from '../application/class.read.service';
 import {
     ReponseClassArticleForm,
@@ -21,15 +31,17 @@ import { ClassDTO } from '../common/data/class.dto';
 export class ClassReadAdapter {
     constructor(
         @Inject('read_impl')
-        private readonly readService: ClassReadService,
-        private readonly sseService: SseService
+        private readonly readService: ClassReadService
     ) {}
 
     @Get('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async getByClassID(@Param('id') classId, @UserID() id: string): Promise<ResponseDetailClass> {
-        const response = await this.readService.getByClassId(+classId, +id);
+    async getByClassID(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<ResponseDetailClass> {
+        const response = await this.readService.getByClassId(classId, +id);
 
         return new ResponseDetailClass(
             response.classDTO,
@@ -50,31 +62,31 @@ export class ClassReadAdapter {
     @Get('/sse/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async start(@Param('id') classId: string, @UserID() id: string, @Res() res) {
-        return await this.readService.sseConnect(+classId, +id, res);
+    async start(@Param('id', ParseIntPipe) classId: number, @UserID() id: string, @Res() res) {
+        return await this.readService.sseConnect(classId, +id, res);
     }
 
     @Get('/validate/:id')
-    async getByClassNum(@Param('id') classNum: string): Promise<ClassDTO> {
-        return await this.readService.getByClassNum(+classNum);
+    async getByClassNum(@Param('id', ParseIntPipe) classNum: number): Promise<ClassDTO> {
+        return await this.readService.getByClassNum(classNum);
     }
 
     @Post('/validate/item/:id')
     async validateArticle(
-        @Param('id') classId: string,
+        @Param('id', ParseIntPipe) classId: number,
         @Body() body: { ids: number[] }
     ): Promise<void> {
-        return await this.readService.validateItems(+classId, body.ids);
+        return await this.readService.validateItems(classId, body.ids);
     }
 
     @Get('/classItem/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async getClassItem(
-        @Param('id') classId: string,
+        @Param('id', ParseIntPipe) classId: number,
         @UserID() id: string
     ): Promise<ResponseClassItemsForm[]> {
-        const classItems = await this.readService.getOrganClassItems(+classId, +id);
+        const classItems = await this.readService.getOrganClassItems(classId, +id);
         return await Promise.all(
             classItems.map((classItem) => new ResponseClassItemsForm(classItem))
         );
@@ -84,11 +96,11 @@ export class ClassReadAdapter {
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async getClassArticle(
-        @Param('id') classId: string,
+        @Param('id', ParseIntPipe) classId: number,
         @UserID() id: string
     ): Promise<ReponseClassArticleForm> {
-        const classArticles = await this.readService.getOrganClassArticles(+classId, +id);
-        const classInfo = await this.readService.getByClassId(+classId, +id);
+        const classArticles = await this.readService.getOrganClassArticles(classId, +id);
+        const classInfo = await this.readService.getByClassId(classId, +id);
 
         return new ReponseClassArticleForm(classArticles, classInfo.classDTO.maxInvDeg);
     }
@@ -111,10 +123,10 @@ export class ClassReadAdapter {
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.STUDENT])
     async getTeamClassItemById(
-        @Param('id') itemId: string,
+        @Param('id', ParseIntPipe) itemId: number,
         @UserID() id: string
     ): Promise<ResponseTeamClassItemDetailForm> {
-        const classItem = await this.readService.getClassItemById(+id, +itemId);
+        const classItem = await this.readService.getClassItemById(+id, itemId);
         const classTeam = await this.readService.getByTeamId(+id);
 
         return new ResponseTeamClassItemDetailForm(classItem, classTeam.curInvDeg);
