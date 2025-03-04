@@ -30,45 +30,73 @@ export class ItemEntity {
     })
     logo: string;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'MONEY',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     money: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'DEBT',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     debt: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'CAPITAL',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     capital: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'PROFIT',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     profit: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'PROFIT_OG',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     profitOG: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'PROFIT_BEN',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     profitBen: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'NET_PROFIT',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     netProfit: number;
 
