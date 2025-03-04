@@ -31,8 +31,7 @@ import { ClassDTO } from '../common/data/class.dto';
 export class ClassReadAdapter {
     constructor(
         @Inject('read_impl')
-        private readonly readService: ClassReadService,
-        private readonly sseService: SseService
+        private readonly readService: ClassReadService
     ) {}
 
     @Get('/:id')
@@ -68,8 +67,8 @@ export class ClassReadAdapter {
     }
 
     @Get('/validate/:id')
-    async getByClassNum(@Param('id', ParseIntPipe) classNum: string): Promise<ClassDTO> {
-        return await this.readService.getByClassNum(+classNum);
+    async getByClassNum(@Param('id', ParseIntPipe) classNum: number): Promise<ClassDTO> {
+        return await this.readService.getByClassNum(classNum);
     }
 
     @Post('/validate/item/:id')
