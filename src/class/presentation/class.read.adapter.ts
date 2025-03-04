@@ -123,10 +123,10 @@ export class ClassReadAdapter {
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.STUDENT])
     async getTeamClassItemById(
-        @Param('id', ParseIntPipe) itemId: string,
+        @Param('id', ParseIntPipe) itemId: number,
         @UserID() id: string
     ): Promise<ResponseTeamClassItemDetailForm> {
-        const classItem = await this.readService.getClassItemById(+id, +itemId);
+        const classItem = await this.readService.getClassItemById(+id, itemId);
         const classTeam = await this.readService.getByTeamId(+id);
 
         return new ResponseTeamClassItemDetailForm(classItem, classTeam.curInvDeg);
