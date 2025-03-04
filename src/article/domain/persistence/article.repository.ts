@@ -7,6 +7,7 @@ import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
 import { ArticleDomainMapper } from './article.domain.mapper';
 import { S3Adapter } from 'src/common/thirdparty/s3.adapter';
+import { ClassArticleEntity } from 'src/class/domain/persistence/entity/classArticle.entity';
 
 @Injectable()
 export class ArticleRepository implements ArticleDomainReader, ArticleDomainWriter {
@@ -150,13 +151,13 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
     }
 
     async delete(articleId: number, organId: number): Promise<void> {
-        const entity = await this.typeormRepository.findOneBy({
-            id: articleId,
-            deleteYN: false,
-            organ: {
-                id: organId
-            }
-        });
+        const entity = await this.typeormRepository
+            .createQueryBuilder('article')
+            .leftJoinAndSelect('article.classes', 'classArticle')
+            .where('article.id = :articleId', { articleId })
+            .andWhere('article.deleteYN = :deleteYN', { deleteYN: false })
+            .andWhere('article.organId = :organId', { organId })
+            .getOne();
 
         if (!entity) {
             throw new NotFoundException(
@@ -164,10 +165,14 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
             );
         }
 
+        await this.typeormRepository
+            .createQueryBuilder()
+            .delete()
+            .from(ClassArticleEntity)
+            .where('articleId = :articleId', { articleId })
+            .execute();
+
         entity.deleteYN = true;
-
-        const deletedEntity = await this.typeormRepository.update(entity.id, entity);
-
-        return;
+        await this.typeormRepository.save(entity);
     }
 }
