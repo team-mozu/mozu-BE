@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Inject, Param, Post, UseGuards, Headers } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Inject,
+    Param,
+    Post,
+    UseGuards,
+    Headers,
+    ParseIntPipe
+} from '@nestjs/common';
 import { OrganReadService } from '../application/organ.read.service';
 import { OrganDTO } from '../common/data/organ.dto';
 import { RequestLoginForm } from './form/request/request.login.form';
@@ -20,8 +30,8 @@ export class OrganReadAdapter {
     @Get('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async getByOrganID(@Param('id') organId: string): Promise<OrganDTO> {
-        return await this.readService.getByOrganID(+organId);
+    async getByOrganID(@Param('id', ParseIntPipe) organId: number): Promise<OrganDTO> {
+        return await this.readService.getByOrganID(organId);
     }
 
     @Get()
