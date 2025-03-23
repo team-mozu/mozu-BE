@@ -15,7 +15,7 @@ async function bootstrap() {
     );
 
     app.enableCors({
-        origin: '*',
+        origin: ['mozu-stag-admin.vercel.app'],
         methods: '*',
         allowedHeaders: '*',
         credentials: true,
