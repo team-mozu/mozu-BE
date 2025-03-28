@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, ParseIntPipe, Res, UseGuards } from '@nestjs/common';
 import { TeamReadService } from '../application/team.read.service';
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
 import { Permission } from 'src/common/decorator/authority.decorator';
@@ -11,6 +11,7 @@ import {
 } from './form/response/response.team';
 import { HoldItemDTO } from '../common/data/team.holdItem.dto';
 import { TeamOrderDTO } from '../common/data/team.order.dto';
+import { TeamDTO } from '../common/data/team.dto';
 
 @Controller('/team')
 export class TeamReadAdapter {
@@ -65,6 +66,13 @@ export class TeamReadAdapter {
         const teams = await this.readService.getTeamRankById(+id);
 
         return Promise.all(teams.map((team) => new ResponseTeamRankForm(team, +id)));
+    }
+
+    @Get('/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async getClassTeam(@Param('id', ParseIntPipe) teamId: number): Promise<TeamOrderDTO[]> {
+        return await this.readService.getTeamInvOrderById(teamId);
     }
 }
 

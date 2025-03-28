@@ -1,7 +1,7 @@
-import { RequestTeamForm } from './request.team';
 import { TeamDTO } from 'src/team/common/data/team.dto';
 import { RequestTeamOrderForm } from './request.team.order';
 import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
+import { RequestTeamForm } from './request.team';
 
 export class RequestTeamFormMapper {
     async toDTO(form: RequestTeamForm): Promise<TeamDTO> {
