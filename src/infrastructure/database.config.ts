@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ArticleEntity } from 'src/article/domain/persistence/article.entity';
-import { ClassEntity } from 'src/class/domain/class/persistence/class.entity';
-import { ClassArticleEntity } from 'src/class/domain/classArticle/persistence/classArticle.entity';
+import { ClassEntity } from 'src/class/domain/persistence/entity/class.entity';
+import { ClassArticleEntity } from 'src/class/domain/persistence/entity/classArticle.entity';
+import { ClassItemEntity } from 'src/class/domain/persistence/entity/classItem.entity';
 import { ItemEntity } from 'src/item/domain/persistence/item.entity';
 import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
+import { HoldItemEntity } from 'src/team/domain/persistence/holdItem.entity';
+import { TeamEntity } from 'src/team/domain/persistence/team.entity';
+import { TeamOrderEntity } from 'src/team/domain/persistence/team.order.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -19,7 +23,17 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             username: this.configService.get<string>('DB_NAME'),
             password: this.configService.get<string>('DB_PASSWORD'),
             database: this.configService.get<string>('DB_DATABASE'),
-            entities: [ArticleEntity, ClassEntity, ClassArticleEntity, OrganEntity, ItemEntity],
+            entities: [
+                OrganEntity,
+                ItemEntity,
+                ArticleEntity,
+                ClassEntity,
+                ClassItemEntity,
+                ClassArticleEntity,
+                TeamEntity,
+                TeamOrderEntity,
+                HoldItemEntity
+            ],
             synchronize: true, // production 단계에서 false로 변경
             autoLoadEntities: true,
             logging: true,

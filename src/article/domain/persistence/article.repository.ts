@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleDomainReader } from '../article.domain.reader';
 import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { ArticleDomainWriter } from '../article.domain.writer';
@@ -7,6 +7,7 @@ import { ArticleEntity } from './article.entity';
 import { Repository } from 'typeorm';
 import { ArticleDomainMapper } from './article.domain.mapper';
 import { S3Adapter } from 'src/common/thirdparty/s3.adapter';
+import { ClassArticleEntity } from 'src/class/domain/persistence/entity/classArticle.entity';
 
 @Injectable()
 export class ArticleRepository implements ArticleDomainReader, ArticleDomainWriter {
@@ -49,6 +50,21 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         return articleList;
     }
 
+    async validateArticles(organId: number, ids: number[]): Promise<void> {
+        const validArticles = await this.typeormRepository
+            .createQueryBuilder('article')
+            .where('article.organId = :organId', { organId })
+            .andWhere('article.deleteYN = :deleteYN', { deleteYN: false })
+            .andWhere('article.id IN (:...ids)', { ids })
+            .getMany();
+
+        if (validArticles.length !== ids.length) {
+            const validIds = validArticles.map((article) => article.id);
+            const notFoundIds = ids.filter((id) => !validIds.includes(id));
+            throw new NotFoundException(`[${notFoundIds}] 해당 기사 id들이 유효하지 않습니다.`);
+        }
+    }
+
     async save(
         articleDTO: ArticleDTO,
         file: Express.Multer.File,
@@ -57,7 +73,7 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
         let image: string;
 
         if (!file) {
-            image = await this.s3Adapter.getImageUrl('내 로고.png');
+            image = await this.s3Adapter.getImageUrl('기사 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
@@ -113,8 +129,12 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
             deleteYN: false
         });
 
-        if (!file) {
-            updatedEntity.image = await this.s3Adapter.getImageUrl('내 로고.png');
+        console.log(articleDTO);
+
+        if (articleDTO.image == '') {
+            updatedEntity.image = pastArticle.image;
+        } else if (!file) {
+            updatedEntity.image = await this.s3Adapter.getImageUrl('기사 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
@@ -131,13 +151,13 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
     }
 
     async delete(articleId: number, organId: number): Promise<void> {
-        const entity = await this.typeormRepository.findOneBy({
-            id: articleId,
-            deleteYN: false,
-            organ: {
-                id: organId
-            }
-        });
+        const entity = await this.typeormRepository
+            .createQueryBuilder('article')
+            .leftJoinAndSelect('article.classes', 'classArticle')
+            .where('article.id = :articleId', { articleId })
+            .andWhere('article.deleteYN = :deleteYN', { deleteYN: false })
+            .andWhere('article.organId = :organId', { organId })
+            .getOne();
 
         if (!entity) {
             throw new NotFoundException(
@@ -145,10 +165,14 @@ export class ArticleRepository implements ArticleDomainReader, ArticleDomainWrit
             );
         }
 
+        await this.typeormRepository
+            .createQueryBuilder()
+            .delete()
+            .from(ClassArticleEntity)
+            .where('articleId = :articleId', { articleId })
+            .execute();
+
         entity.deleteYN = true;
-
-        const deletedEntity = await this.typeormRepository.update(entity.id, entity);
-
-        return;
+        await this.typeormRepository.save(entity);
     }
 }

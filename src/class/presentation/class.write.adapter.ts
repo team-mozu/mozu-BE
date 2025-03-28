@@ -1,8 +1,22 @@
-import { Body, Controller, Delete, Inject, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Inject,
+    Param,
+    ParseIntPipe,
+    Post,
+    UseGuards
+} from '@nestjs/common';
 import { RequestClassFormMapper } from './form/request/request.class.form.mapper';
 import { RequestClassForm } from './form/request/request.class.form';
 import { ClassWrtieService } from '../application/class.write.service';
 import { ResponseDetailClass } from './form/response/response.class.form';
+import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
+import { Permission } from 'src/common/decorator/authority.decorator';
+import { Authority } from 'src/common/data/Role';
+import { UserID } from 'src/common/decorator/user.decorator';
+import { ResponseClassCodeForm } from './form/response/response.classCode.form';
 
 @Controller('/class')
 export class ClassWrtieAdapter {
@@ -13,12 +27,102 @@ export class ClassWrtieAdapter {
     ) {}
 
     @Post('/create')
-    async create(@Body() form: RequestClassForm): Promise<ResponseDetailClass> {
-        const { classDTO, classArticleDTO } = await this.requestClassFormMapper.toDTO(form);
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async create(
+        @Body() form: RequestClassForm,
+        @UserID() id: string
+    ): Promise<ResponseDetailClass> {
+        const { classDTO, classItemDTO, classArticleDTO } =
+            await this.requestClassFormMapper.toDTO(form);
 
-        const response = await this.writeService.create(classDTO, classArticleDTO);
+        const response = await this.writeService.create(
+            +id,
+            classDTO,
+            classItemDTO,
+            classArticleDTO
+        );
 
-        return new ResponseDetailClass(response.classDTO, response.classArticleDTO);
+        return new ResponseDetailClass(
+            response.classDTO,
+            response.classItemDTO,
+            response.classArticleDTO
+        );
+    }
+
+    @Post('/update/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async update(
+        @Param('id', ParseIntPipe) classId: number,
+        @Body() form: RequestClassForm,
+        @UserID() id: string
+    ): Promise<ResponseDetailClass> {
+        const { classDTO, classItemDTO, classArticleDTO } =
+            await this.requestClassFormMapper.toDTO(form);
+
+        const response = await this.writeService.update(
+            +id,
+            classId,
+            classDTO,
+            classItemDTO,
+            classArticleDTO
+        );
+
+        return new ResponseDetailClass(
+            response.classDTO,
+            response.classItemDTO,
+            response.classArticleDTO
+        );
+    }
+
+    @Post('/star/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async updateStarYN(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.changeStarYN(+id, classId);
+    }
+
+    @Delete('/delete/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async delete(@Param('id', ParseIntPipe) classId: number, @UserID() id: string): Promise<void> {
+        return await this.writeService.delete(+id, classId);
+    }
+
+    @Post('/start/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async startClass(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<ResponseClassCodeForm> {
+        const classCode = await this.writeService.startClass(+id, classId);
+
+        return new ResponseClassCodeForm(classCode);
+    }
+
+    @Post('/stop/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async stopClass(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.stopClass(+id, classId);
+    }
+
+    @Post('/next/:id')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async classNextInvDeg(
+        @Param('id', ParseIntPipe) classId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.nextInvDeg(+id, classId);
     }
 }
 
@@ -36,3 +140,19 @@ export class ClassWrtieAdapter {
  * 4. 수업 즐겨찾기 변경 API
  *      수업 번호 <- 입력
  */
+
+/*
+[작성 API]
+{기관용} 수업 시작 API - [POST]
+[INPUT] -> 수업 ID(Param), Token
+[OUTPUT] -> 수업 참여 코드
+
+{기관용} 수업 종료 API - [POST]
+[INPUT] -> 수업 ID(Param), Token
+[OUTPUT] -> 없음
+
+{기관용} 수업 투자 차수 진행 API - [POST]
+[INPUT] -> 수업 ID(Param), Token
+[OUTPUT] ->  없음
+학생 클라이언트로 이벤트 발생    
+*/

@@ -1,11 +1,10 @@
-import { Body, Controller, Inject, Injectable, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { RequestOrganForm } from './form/request/request.organ.form';
 import { OrganDTO } from '../common/data/organ.dto';
 import { RequestOrganFormMapper } from './form/request/request.organ.form.mapper';
 import { OrganWrtieService } from '../application/organ.write.service';
 
 @Controller('/organ')
-@Injectable()
 export class OrganWriteAdapter {
     constructor(
         @Inject('write_impl')

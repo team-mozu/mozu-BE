@@ -14,6 +14,14 @@ async function bootstrap() {
         })
     );
 
+    app.enableCors({
+        origin: true,
+        methods: '*',
+        allowedHeaders: '*',
+        credentials: true,
+        preflightContinue: false
+    });
+
     await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

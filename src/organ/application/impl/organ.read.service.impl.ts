@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { OrganReadService } from '../organ.read.service';
 import { OrganDomainReader } from 'src/organ/domain/organ.domain.reader';
 import { OrganDTO } from 'src/organ/common/data/organ.dto';
@@ -29,21 +29,33 @@ export class OrganReadServiceImpl implements OrganReadService {
         const organ = await this.reader.findByOrganCode(code);
 
         if (!organ) {
-            throw new UnprocessableEntityException(
-                '입력한 기관 코드에 해당하는 기관이 존재하지 않습니다.'
-            );
+            throw new UnauthorizedException('기관 코드 혹은 비밀번호가 틀렸습니다.');
         }
 
         const isAuth = await bcrypt.compare(password, organ.password);
 
         if (!isAuth) {
-            throw new UnprocessableEntityException('비밀번호가 틀렸습니다.');
+            throw new UnauthorizedException('기관 코드 혹은 비밀번호가 틀렸습니다.');
         }
 
         return {
             accessToken: await this.signToken(organ, false),
             refreshToken: await this.signToken(organ, true)
         };
+    }
+
+    async tokenReissue(refreshToken: string): Promise<string> {
+        if (!refreshToken) {
+            throw new UnauthorizedException('Jwt 토큰이 없습니다.');
+        }
+
+        const token = refreshToken.substring(7);
+
+        const sub = await this.parseToken(token);
+
+        const organ = new OrganDTO(sub.id, sub.name, null, null);
+
+        return await this.signToken(organ, false);
     }
 
     async signToken(organ: OrganDTO, isRefreshToken: boolean) {
@@ -55,8 +67,29 @@ export class OrganReadServiceImpl implements OrganReadService {
         };
 
         return await this.jwtService.sign(payload, {
-            secret: this.configService.get<string>('JWT_ACCESS_SECRET_KEY'),
-            expiresIn: isRefreshToken ? 36000 : 3600
+            secret: isRefreshToken
+                ? this.configService.get<string>('JWT_REFRESH_SECRET_KEY')
+                : this.configService.get<string>('JWT_ACCESS_SECRET_KEY'),
+            expiresIn: isRefreshToken
+                ? +this.configService.get<number>('JWT_REFRESHY_TOKEN_TIME')
+                : +this.configService.get<number>('JWT_ACCESS_TOKEN_TIME')
         });
+    }
+
+    async parseToken(token: string) {
+        let parsed: any;
+        try {
+            parsed = this.jwtService.verify(token, {
+                secret: this.configService.get<string>('JWT_REFRESH_SECRET_KEY')
+            });
+        } catch (e) {
+            throw new UnauthorizedException(e.message);
+        }
+
+        if (parsed.type != 'refresh') {
+            throw new UnauthorizedException('Invalid Token');
+        }
+
+        return parsed;
     }
 }

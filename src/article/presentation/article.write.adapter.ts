@@ -4,6 +4,7 @@ import {
     Delete,
     Inject,
     Param,
+    ParseIntPipe,
     Post,
     UploadedFile,
     UseGuards,
@@ -46,20 +47,23 @@ export class ArticleWriteAdapter {
     @Permission([Authority.ORGAN])
     @UseInterceptors(FileInterceptor('image'))
     async update(
-        @Param('id') articleId: string,
+        @Param('id', ParseIntPipe) articleId: number,
         @Body() form: RequestArticleForm,
-        @UploadedFile() file: Express.Multer.File,
-        @UserID() id: string
+        @UserID() id: string,
+        @UploadedFile() file?: Express.Multer.File
     ): Promise<ArticleDTO> {
         const internalDTO = await this.requestArticleFormMapper.toDTO(form);
 
-        return await this.writeService.update(+articleId, internalDTO, file, +id);
+        return await this.writeService.update(articleId, internalDTO, file, +id);
     }
 
     @Delete('/delete/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async delete(@Param('id') articleId: string, @UserID() id: string): Promise<void> {
-        return await this.writeService.delete(+articleId, +id);
+    async delete(
+        @Param('id', ParseIntPipe) articleId: number,
+        @UserID() id: string
+    ): Promise<void> {
+        return await this.writeService.delete(articleId, +id);
     }
 }

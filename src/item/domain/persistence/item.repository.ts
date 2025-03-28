@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { ItemDomainReader } from '../item.domain.reader';
 import { ItemDomainWriter } from '../item.domain.writer';
 import { ItemDTO } from 'src/item/common/data/item.dto';
+import { ClassItemEntity } from 'src/class/domain/persistence/entity/classItem.entity';
 
 @Injectable()
 export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
@@ -46,11 +47,26 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
         return itemList;
     }
 
+    async validateItems(organId: number, ids: number[]): Promise<void> {
+        const validItems = await this.typeormRepository
+            .createQueryBuilder('item')
+            .where('item.organId = :organId', { organId })
+            .andWhere('item.deleteYN = :deleteYN', { deleteYN: false })
+            .andWhere('item.id IN (:...ids)', { ids })
+            .getMany();
+
+        if (validItems.length !== ids.length) {
+            const validIds = validItems.map((item) => item.id);
+            const notFoundIds = ids.filter((id) => !validIds.includes(id));
+            throw new NotFoundException(`[${notFoundIds}] 해당 종목 id들이 유효하지 않습니다.`);
+        }
+    }
+
     async save(itemDTO: ItemDTO, file: Express.Multer.File, organId: number): Promise<ItemDTO> {
         let image: string;
 
         if (!file) {
-            image = await this.s3Adapter.getImageUrl('내 로고.png');
+            image = await this.s3Adapter.getImageUrl('종목 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
@@ -104,8 +120,10 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
             deleteYN: false
         });
 
-        if (!file) {
-            updatedEntity.logo = await this.s3Adapter.getImageUrl('내 로고.png');
+        if (itemDTO.logo == '') {
+            updatedEntity.logo = pastItem.logo;
+        } else if (!file) {
+            updatedEntity.logo = await this.s3Adapter.getImageUrl('종목 기본 이미지.svg');
         } else {
             await this.s3Adapter.uploadImage(file.originalname, file.buffer);
 
@@ -122,13 +140,13 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
     }
 
     async delete(itemId: number, organId: number): Promise<void> {
-        const entity = await this.typeormRepository.findOneBy({
-            id: itemId,
-            deleteYN: false,
-            organ: {
-                id: organId
-            }
-        });
+        const entity = await this.typeormRepository
+            .createQueryBuilder('item')
+            .leftJoinAndSelect('item.classes', 'classItem')
+            .where('item.id = :itemId', { itemId })
+            .andWhere('item.deleteYN = :deleteYN', { deleteYN: false })
+            .andWhere('item.organId = :organId', { organId })
+            .getOne();
 
         if (!entity) {
             throw new NotFoundException(
@@ -136,10 +154,14 @@ export class ItemRepository implements ItemDomainReader, ItemDomainWriter {
             );
         }
 
+        await this.typeormRepository
+            .createQueryBuilder()
+            .delete()
+            .from(ClassItemEntity)
+            .where('itemId = :itemId', { itemId })
+            .execute();
+
         entity.deleteYN = true;
-
-        const deletedEntity = await this.typeormRepository.update(entity.id, entity);
-
-        return;
+        await this.typeormRepository.save(entity);
     }
 }

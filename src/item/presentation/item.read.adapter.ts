@@ -1,4 +1,13 @@
-import { Controller, Get, Inject, Injectable, Param, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Inject,
+    Param,
+    ParseIntPipe,
+    Post,
+    UseGuards
+} from '@nestjs/common';
 import { ItemReadService } from '../application/item.read.service';
 import { ItemDTO } from '../common/data/item.dto';
 import { JwtAuthGuard } from 'src/common/guard/jwt.guard';
@@ -8,7 +17,6 @@ import { UserID } from 'src/common/decorator/user.decorator';
 import { ResponseItemForm } from './form/response/response.item.form';
 
 @Controller('/item')
-@Injectable()
 export class ItemReadAdapter {
     constructor(
         @Inject('read_impl')
@@ -18,8 +26,8 @@ export class ItemReadAdapter {
     @Get('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN, Authority.STUDENT])
-    async getByItemID(@Param('id') itemId: string): Promise<ItemDTO> {
-        return await this.readService.getByItemId(+itemId);
+    async getByItemID(@Param('id', ParseIntPipe) itemId: number): Promise<ItemDTO> {
+        return await this.readService.getByItemId(itemId);
     }
 
     @Get()
@@ -29,5 +37,12 @@ export class ItemReadAdapter {
         const articleList = await this.readService.getItemList(+id);
 
         return new ResponseItemForm(articleList);
+    }
+
+    @Post('validate')
+    async validateItems(@Body() body: { organId: number; ids: number[] }): Promise<Boolean> {
+        await this.readService.validateItems(body.organId, body.ids);
+
+        return true;
     }
 }

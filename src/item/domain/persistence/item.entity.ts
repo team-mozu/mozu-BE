@@ -1,14 +1,6 @@
-import { log } from 'console';
-import { ClassArticleEntity } from 'src/class/domain/classArticle/persistence/classArticle.entity';
+import { ClassItemEntity } from 'src/class/domain/persistence/entity/classItem.entity';
 import { OrganEntity } from 'src/organ/domain/persistence/organ.entity';
-import {
-    Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('TB_ITEM')
 export class ItemEntity {
@@ -33,49 +25,78 @@ export class ItemEntity {
         name: 'ITEM_LOGO',
         length: 255,
         nullable: true,
-        default: '<!!>추후에 스켈레톤 UI url 추가 되어야 함<!!>'
+        default:
+            'https://mozu-bucket.s3.ap-northeast-2.amazonaws.com/종목 기본 이미지.svg'
     })
     logo: string;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'MONEY',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     money: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'DEBT',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     debt: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'CAPITAL',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     capital: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'PROFIT',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     profit: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'PROFIT_OG',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     profitOG: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'PROFIT_BEN',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     profitBen: number;
 
-    @Column('int', {
+    @Column('bigint', {
         name: 'NET_PROFIT',
-        nullable: false
+        nullable: false,
+        transformer: {
+            to: (value: number) => value,
+            from: (value: string) => Number(value)
+        }
     })
     netProfit: number;
 
@@ -95,6 +116,9 @@ export class ItemEntity {
 
     @ManyToOne(() => OrganEntity, (organ) => organ.items)
     organ: OrganEntity;
+
+    @OneToMany(() => ClassItemEntity, (classes) => classes.item)
+    classes: ClassItemEntity[];
 
     constructor(
         name: string,

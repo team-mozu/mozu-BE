@@ -2,10 +2,9 @@ import {
     Body,
     Controller,
     Delete,
-    Get,
     Inject,
-    Injectable,
     Param,
+    ParseIntPipe,
     Post,
     UploadedFile,
     UseGuards,
@@ -23,7 +22,6 @@ import { Permission } from 'src/common/decorator/authority.decorator';
 import { Authority } from 'src/common/data/Role';
 
 @Controller('/item')
-@Injectable()
 export class ItemWrtieAdapter {
     constructor(
         @Inject('write_impl')
@@ -50,20 +48,20 @@ export class ItemWrtieAdapter {
     @Permission([Authority.ORGAN])
     @UseInterceptors(FileInterceptor('logo'))
     async update(
-        @Param('id') itemId: string,
+        @Param('id', ParseIntPipe) itemId: number,
         @Body() form: RequestItemForm,
-        @UploadedFile() file: Express.Multer.File,
-        @UserID() id: string
+        @UserID() id: string,
+        @UploadedFile() file?: Express.Multer.File
     ): Promise<ItemDTO> {
         const internalDTO = await this.requestItemFormMapper.toDTO(form);
 
-        return await this.writeService.update(+itemId, internalDTO, file, +id);
+        return await this.writeService.update(itemId, internalDTO, file, +id);
     }
 
     @Delete('/delete/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
-    async delete(@Param('id') itemId: string, @UserID() id: string): Promise<void> {
-        return await this.writeService.delete(+itemId, +id);
+    async delete(@Param('id', ParseIntPipe) itemId: number, @UserID() id: string): Promise<void> {
+        return await this.writeService.delete(itemId, +id);
     }
 }
