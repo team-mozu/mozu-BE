@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { GlobalJwtModule } from './common/module/jwt.module';
 import { GlobalConfigModule } from './common/module/config.module';
 import { TeamModule } from './team/team.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { TeamModule } from './team/team.module';
         OrganModule,
         ItemModule,
         TeamModule,
+        HealthModule,
         MozuLoggerModule
     ],
     controllers: [],
