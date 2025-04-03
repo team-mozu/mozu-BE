@@ -176,16 +176,18 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
     }
 
     async validateItems(classId: number, ids: number[]): Promise<void> {
+        const uniqueIds = [...new Set(ids)];
+
         const validItems = await this.classItemTypeormRepository
             .createQueryBuilder('classItems')
             .where('classItems.classId = :classId', { classId })
-            .andWhere('classItems.itemId IN (:...ids)', { ids })
+            .andWhere('classItems.itemId IN (:...uniqueIds)', { uniqueIds })
             .getMany();
 
-        if (validItems.length !== ids.length) {
+        if (validItems.length !== uniqueIds.length) {
             const validIds = validItems.map((item) => item.itemId);
-            const notFoundIds = ids.filter((id) => !validIds.includes(id));
-            throw new NotFoundException(`[${notFoundIds}] 해당 기사 id들이 유효하지 않습니다.`);
+            const notFoundIds = uniqueIds.filter((id) => !validIds.includes(id));
+            throw new NotFoundException(`[${notFoundIds}] 해당 종목 id들이 유효하지 않습니다.`);
         }
     }
 
