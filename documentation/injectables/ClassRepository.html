@@ -1,0 +1,2287 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>mozu-BE documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">mozu-BE documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ClassRepository</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/class/domain/persistence/class.repository.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#changeStarYN" >changeStarYN</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#delete" >delete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findByTeamId" >findByTeamId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findClassByCode" >findClassByCode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findClassById" >findClassById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findClassItemById" >findClassItemById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findClassList" >findClassList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findOrganClassArticles" >findOrganClassArticles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findOrganClassItems" >findOrganClassItems</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamClassArticles" >findTeamClassArticles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamClassItems" >findTeamClassItems</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#nextInvDeg" >nextInvDeg</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#save" >save</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#startClass" >startClass</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#stopClass" >stopClass</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#update" >update</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#validateItems" >validateItems</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(classTypeormRepository: <a href="../entitys/ClassEntity.html" target="_self">Repository&lt;ClassEntity&gt;</a>, classItemTypeormRepository: <a href="../classes/ClassItem.html" target="_self">Repository&lt;ClassItemEntity&gt;</a>, classArticleTypeormRepository: <a href="../classes/ClassArticle.html" target="_self">Repository&lt;ClassArticleEntity&gt;</a>, mapper: <a href="../injectables/ClassDomainMapper.html" target="_self">ClassDomainMapper</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/class/domain/persistence/class.repository.ts:15</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>classTypeormRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/ClassEntity.html" target="_self" >Repository&lt;ClassEntity&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>classItemTypeormRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/ClassItem.html" target="_self" >Repository&lt;ClassItemEntity&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>classArticleTypeormRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/ClassArticle.html" target="_self" >Repository&lt;ClassArticleEntity&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mapper</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ClassDomainMapper.html" target="_self" >ClassDomainMapper</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeStarYN"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>changeStarYN</b></span>
+                        <a href="#changeStarYN"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>changeStarYN(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="388"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:388</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delete"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>delete</b></span>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delete(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="409"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:409</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findByTeamId"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findByTeamId</b></span>
+                        <a href="#findByTeamId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findByTeamId(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="247"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:247</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/ClassDTO.html" target="_self" >Promise&lt;ClassDTO&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findClassByCode"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findClassByCode</b></span>
+                        <a href="#findClassByCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findClassByCode(classNum: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="79"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>classNum</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/ClassDTO.html" target="_self" >Promise&lt;ClassDTO&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findClassById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findClassById</b></span>
+                        <a href="#findClassById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findClassById(classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findClassItemById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findClassItemById</b></span>
+                        <a href="#findClassItemById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findClassItemById(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, itemId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="146"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:146</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>itemId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;ClassItemDTO&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findClassList"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findClassList</b></span>
+                        <a href="#findClassList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findClassList(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/ClassDTO.html" target="_self" >Promise&lt;ClassDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findOrganClassArticles"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findOrganClassArticles</b></span>
+                        <a href="#findOrganClassArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findOrganClassArticles(classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:96</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;ClassArticleDTO[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findOrganClassItems"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findOrganClassItems</b></span>
+                        <a href="#findOrganClassItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findOrganClassItems(classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:122</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;ClassItemDTO[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamClassArticles"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamClassArticles</b></span>
+                        <a href="#findTeamClassArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamClassArticles(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:192</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;ClassArticleDTO[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamClassItems"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamClassItems</b></span>
+                        <a href="#findTeamClassItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamClassItems(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="224"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:224</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;ClassItemDTO[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextInvDeg"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>nextInvDeg</b></span>
+                        <a href="#nextInvDeg"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>nextInvDeg(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="476"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:476</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="save"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>save</b></span>
+                        <a href="#save"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>save(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classDTO: <a href="../classes/ClassDTO.html" target="_self">ClassDTO</a>, classItemDTO: ClassItemDTO[], classArticleDTO: ClassArticleDTO[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="268"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classDTO</td>
+                                            <td>
+                                                            <code><a href="../classes/ClassDTO.html" target="_self" >ClassDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classItemDTO</td>
+                                            <td>
+                                                        <code>ClassItemDTO[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classArticleDTO</td>
+                                            <td>
+                                                        <code>ClassArticleDTO[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startClass"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>startClass</b></span>
+                        <a href="#startClass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>startClass(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classNum: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="432"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:432</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classNum</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopClass"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>stopClass</b></span>
+                        <a href="#stopClass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stopClass(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="454"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:454</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="update"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>update</b></span>
+                        <a href="#update"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>update(organId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, classDTO: <a href="../classes/ClassDTO.html" target="_self">ClassDTO</a>, classItemDTO: ClassItemDTO[], classArticleDTO: ClassArticleDTO[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="323"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:323</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>organId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classDTO</td>
+                                            <td>
+                                                            <code><a href="../classes/ClassDTO.html" target="_self" >ClassDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classItemDTO</td>
+                                            <td>
+                                                        <code>ClassItemDTO[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classArticleDTO</td>
+                                            <td>
+                                                        <code>ClassArticleDTO[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateItems"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>validateItems</b></span>
+                        <a href="#validateItems"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validateItems(classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, ids: number[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="178"
+                                    class="link-to-prism">src/class/domain/persistence/class.repository.ts:178</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>ids</td>
+                                            <td>
+                                                        <code>number[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BadRequestException, Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;;
+import { ClassDomainReader } from &#x27;../class.domain.reader&#x27;;
+import { ClassDomainWrtier } from &#x27;../class.domain.writer&#x27;;
+import { ClassDTO } from &#x27;src/class/common/data/class.dto&#x27;;
+import { Repository } from &#x27;typeorm&#x27;;
+import { ClassEntity } from &#x27;./entity/class.entity&#x27;;
+import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
+import { ClassDomainMapper } from &#x27;./class.domain.mapper&#x27;;
+import { ClassArticleEntity } from &#x27;./entity/classArticle.entity&#x27;;
+import { ClassItemEntity } from &#x27;./entity/classItem.entity&#x27;;
+import { ClassItemDTO } from &#x27;src/class/common/data/class.item.dto&#x27;;
+import { ClassArticleDTO } from &#x27;src/class/common/data/class.article.dto&#x27;;
+
+@Injectable()
+export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
+    constructor(
+        @InjectRepository(ClassEntity)
+        private readonly classTypeormRepository: Repository&lt;ClassEntity&gt;,
+        @InjectRepository(ClassItemEntity)
+        private readonly classItemTypeormRepository: Repository&lt;ClassItemEntity&gt;,
+        @InjectRepository(ClassArticleEntity)
+        private readonly classArticleTypeormRepository: Repository&lt;ClassArticleEntity&gt;,
+        private readonly mapper: ClassDomainMapper
+    ) {}
+
+    async findClassList(organId: number): Promise&lt;ClassDTO[]&gt; {
+        const entities &#x3D; await this.classTypeormRepository.find({
+            where: {
+                deleteYN: false,
+                organ: {
+                    id: organId
+                }
+            }
+        });
+
+        const classList &#x3D; await Promise.all(
+            entities.map((entity) &#x3D;&gt; this.mapper.toClassDomain(entity))
+        );
+
+        return classList;
+    }
+
+    async findClassById(
+        classId: number,
+        organId: number
+    ): Promise&lt;{
+        classDTO: ClassDTO;
+        classItemDTO: ClassItemDTO[];
+        classArticleDTO: ClassArticleDTO[];
+    }&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                deleteYN: false,
+                organ: { id: organId }
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classArticles&#x27;, &#x27;classItems.item&#x27;, &#x27;classArticles.article&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 삭제 되었습니다.&#x60;
+            );
+        }
+
+        return {
+            classDTO: await this.mapper.toClassDomain(existingClass),
+            classItemDTO: await Promise.all(
+                existingClass.classItems.map((item) &#x3D;&gt; this.mapper.toClassItemDomain(item))
+            ),
+            classArticleDTO: await Promise.all(
+                existingClass.classArticles.map((article) &#x3D;&gt;
+                    this.mapper.toClassArticleDomain(article)
+                )
+            )
+        };
+    }
+
+    async findClassByCode(classNum: number): Promise&lt;ClassDTO&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                classNum: classNum,
+                deleteYN: false
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classNum})의 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        return await this.mapper.toClassDomain(existingClass);
+    }
+
+    async findOrganClassArticles(classId: number, organId: number): Promise&lt;ClassArticleDTO[]&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: {
+                    id: organId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: [&#x27;classArticles&#x27;, &#x27;classArticles.article&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        return await Promise.all(
+            existingClass.classArticles.map((classArticle) &#x3D;&gt;
+                this.mapper.toClassArticleDomain(classArticle)
+            )
+        );
+    }
+
+    async findOrganClassItems(classId: number, organId: number): Promise&lt;ClassItemDTO[]&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: {
+                    id: organId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classItems.item&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        return await Promise.all(
+            existingClass.classItems.map((classItem) &#x3D;&gt; this.mapper.toClassItemDomain(classItem))
+        );
+    }
+
+    async findClassItemById(teamId: number, itemId: number): Promise&lt;ClassItemDTO&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        const classItem &#x3D; await this.classItemTypeormRepository.findOne({
+            where: {
+                classId: existingClass.id,
+                itemId: itemId
+            },
+            relations: [&#x27;item&#x27;]
+        });
+
+        if (!classItem) {
+            throw new NotFoundException(&#x60;해당하는 id(${itemId})의 수업 종목이 존재하지 않습니다.&#x60;);
+        }
+
+        return await this.mapper.toClassItemDomain(classItem);
+    }
+
+    async validateItems(classId: number, ids: number[]): Promise&lt;void&gt; {
+        const validItems &#x3D; await this.classItemTypeormRepository
+            .createQueryBuilder(&#x27;classItems&#x27;)
+            .where(&#x27;classItems.classId &#x3D; :classId&#x27;, { classId })
+            .andWhere(&#x27;classItems.itemId IN (:...ids)&#x27;, { ids })
+            .getMany();
+
+        if (validItems.length !&#x3D;&#x3D; ids.length) {
+            const validIds &#x3D; validItems.map((item) &#x3D;&gt; item.itemId);
+            const notFoundIds &#x3D; ids.filter((id) &#x3D;&gt; !validIds.includes(id));
+            throw new NotFoundException(&#x60;[${notFoundIds}] 해당 기사 id들이 유효하지 않습니다.&#x60;);
+        }
+    }
+
+    async findTeamClassArticles(teamId: number): Promise&lt;ClassArticleDTO[]&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        const invDegClassArticles &#x3D; await this.classArticleTypeormRepository.find({
+            where: {
+                classId: existingClass.id,
+                invDeg: existingClass.curInvDeg
+            },
+            relations: [&#x27;article&#x27;]
+        });
+
+        return await Promise.all(
+            invDegClassArticles.map((classArticle) &#x3D;&gt;
+                this.mapper.toClassArticleDomain(classArticle)
+            )
+        );
+    }
+
+    async findTeamClassItems(teamId: number): Promise&lt;ClassItemDTO[]&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classItems.item&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        return await Promise.all(
+            existingClass.classItems.map((classItem) &#x3D;&gt; this.mapper.toClassItemDomain(classItem))
+        );
+    }
+
+    async findByTeamId(teamId: number): Promise&lt;ClassDTO&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                teams: {
+                    id: teamId
+                },
+                progressYN: true,
+                deleteYN: false
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classItems.item&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${teamId})의 학생이 참여한 수업이 존재하지 않거나 진행중이 아닙니다.&#x60;
+            );
+        }
+
+        return await this.mapper.toClassDomain(existingClass);
+    }
+
+    async save(
+        organId: number,
+        classDTO: ClassDTO,
+        classItemDTO: ClassItemDTO[],
+        classArticleDTO: ClassArticleDTO[]
+    ): Promise&lt;{
+        classDTO: ClassDTO;
+        classItemDTO: ClassItemDTO[];
+        classArticleDTO: ClassArticleDTO[];
+    }&gt; {
+        const classEntity &#x3D; this.classTypeormRepository.create({
+            ...(await this.mapper.toClassEntity(classDTO)),
+            organ: { id: organId },
+            classItems: await Promise.all(
+                classItemDTO.map((item) &#x3D;&gt; this.mapper.toClassItemEntity(item, 0)) // 임시 classId (0)
+            ),
+            classArticles: await Promise.all(
+                classArticleDTO.map((article) &#x3D;&gt; this.mapper.toClassArticleEntity(article, 0)) // 임시 classId (0)
+            )
+        });
+
+        const savedClassEntity &#x3D; await this.classTypeormRepository.save(classEntity);
+
+        savedClassEntity.classItems &#x3D; savedClassEntity.classItems.map((item) &#x3D;&gt; ({
+            ...item,
+            classId: savedClassEntity.id
+        }));
+
+        savedClassEntity.classArticles &#x3D; savedClassEntity.classArticles.map((article) &#x3D;&gt; ({
+            ...article,
+            classId: savedClassEntity.id
+        }));
+
+        await this.classTypeormRepository.save(savedClassEntity);
+
+        const newClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: savedClassEntity.id,
+                deleteYN: false,
+                organ: { id: organId }
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classArticles&#x27;, &#x27;classItems.item&#x27;, &#x27;classArticles.article&#x27;]
+        });
+
+        return {
+            classDTO: await this.mapper.toClassDomain(newClass),
+            classItemDTO: await Promise.all(
+                newClass.classItems.map((item) &#x3D;&gt; this.mapper.toClassItemDomain(item))
+            ),
+            classArticleDTO: await Promise.all(
+                newClass.classArticles.map((article) &#x3D;&gt; this.mapper.toClassArticleDomain(article))
+            )
+        };
+    }
+
+    async update(
+        organId: number,
+        classId: number,
+        classDTO: ClassDTO,
+        classItemDTO: ClassItemDTO[],
+        classArticleDTO: ClassArticleDTO[]
+    ): Promise&lt;{
+        classDTO: ClassDTO;
+        classItemDTO: ClassItemDTO[];
+        classArticleDTO: ClassArticleDTO[];
+    }&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                deleteYN: false,
+                organ: { id: organId }
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classArticles&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 삭제 되었습니다.&#x60;
+            );
+        }
+
+        await this.classItemTypeormRepository.delete({ classId });
+        await this.classArticleTypeormRepository.delete({ classId });
+
+        const updatedClass &#x3D; await this.classTypeormRepository.create({
+            ...existingClass,
+            ...(await this.mapper.toClassEntity(classDTO)),
+            classItems: await Promise.all(
+                classItemDTO.map((item) &#x3D;&gt; this.mapper.toClassItemEntity(item, classId))
+            ),
+            classArticles: await Promise.all(
+                classArticleDTO.map((article) &#x3D;&gt; this.mapper.toClassArticleEntity(article, classId))
+            ),
+            id: classId,
+            createdAt: existingClass.createdAt,
+            deleteYN: false
+        });
+
+        const savedClassEntity &#x3D; await this.classTypeormRepository.save(updatedClass);
+
+        const newClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: savedClassEntity.id,
+                deleteYN: false,
+                organ: { id: organId }
+            },
+            relations: [&#x27;classItems&#x27;, &#x27;classArticles&#x27;, &#x27;classItems.item&#x27;, &#x27;classArticles.article&#x27;]
+        });
+
+        return {
+            classDTO: await this.mapper.toClassDomain(newClass),
+            classItemDTO: await Promise.all(
+                newClass.classItems.map((item) &#x3D;&gt; this.mapper.toClassItemDomain(item))
+            ),
+            classArticleDTO: await Promise.all(
+                newClass.classArticles.map((article) &#x3D;&gt; this.mapper.toClassArticleDomain(article))
+            )
+        };
+    }
+
+    async changeStarYN(organId: number, classId: number): Promise&lt;void&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                deleteYN: false,
+                organ: { id: organId }
+            }
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 삭제 되었습니다.&#x60;
+            );
+        }
+
+        existingClass.starYN &#x3D; existingClass.starYN ? false : true;
+        await this.classTypeormRepository.save(existingClass);
+
+        return;
+    }
+
+    async delete(organId: number, classId: number): Promise&lt;void&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId }
+            }
+        });
+
+        await this.classItemTypeormRepository.delete({ classId });
+        await this.classArticleTypeormRepository.delete({ classId });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 삭제 되었습니다.&#x60;
+            );
+        }
+
+        existingClass.deleteYN &#x3D; true;
+        await this.classTypeormRepository.save(existingClass);
+
+        return;
+    }
+
+    async startClass(organId: number, classId: number, classNum: number): Promise&lt;void&gt; {
+        const existingClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId }
+            },
+            relations: [&#x27;organ&#x27;]
+        });
+
+        if (!existingClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 삭제 되었습니다.&#x60;
+            );
+        }
+
+        existingClass.classNum &#x3D; classNum;
+        existingClass.progressYN &#x3D; true;
+        existingClass.curInvDeg &#x3D; 0;
+
+        await this.classTypeormRepository.save(existingClass);
+    }
+
+    async stopClass(organId: number, classId: number): Promise&lt;void&gt; {
+        const progressClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId },
+                progressYN: true
+            }
+        });
+
+        if (!progressClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 진행 중인 수업이 아닙니다.&#x60;
+            );
+        }
+
+        progressClass.classNum &#x3D; null;
+        progressClass.progressYN &#x3D; false;
+        progressClass.curInvDeg &#x3D; 0;
+
+        await this.classTypeormRepository.save(progressClass);
+    }
+
+    async nextInvDeg(organId: number, classId: number): Promise&lt;number&gt; {
+        const progressClass &#x3D; await this.classTypeormRepository.findOne({
+            where: {
+                id: classId,
+                organ: { id: organId },
+                progressYN: true
+            }
+        });
+
+        if (!progressClass) {
+            throw new NotFoundException(
+                &#x60;해당하는 id(${classId})의 수업이 존재하지 않거나 진행 중인 수업이 아닙니다.&#x60;
+            );
+        }
+
+        progressClass.curInvDeg++;
+
+        await this.classTypeormRepository.save(progressClass);
+
+        return progressClass.curInvDeg;
+    }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ClassRepository.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
