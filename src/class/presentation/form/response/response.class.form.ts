@@ -153,17 +153,12 @@ export class ResponseTeamClassItemForm {
         this.itemId = classItemDTO.itemId;
         this.itemName = classItemDTO.item.name;
         this.itemLogo = classItemDTO.item.logo;
-        this.nowMoney = classItemDTO.money[invDeg - 1];
-        if (invDeg === 1) {
-            this.profitMoney = 0;
-            this.profitNum = `0%`;
-        } else {
-            const prevMoney = classItemDTO.money[invDeg - 2];
-            this.profitMoney = this.nowMoney - prevMoney;
+        this.nowMoney = classItemDTO.money[invDeg];
+        const prevMoney = classItemDTO.money[invDeg - 1];
+        this.profitMoney = this.nowMoney - prevMoney;
 
-            const percentChange = (this.profitMoney / prevMoney) * 100;
-            this.profitNum = `${percentChange.toFixed(2)}%`;
-        }
+        const percentChange = (this.profitMoney / prevMoney) * 100;
+        this.profitNum = `${percentChange.toFixed(2)}%`;
     }
 }
 
@@ -207,15 +202,10 @@ export class ResponseTeamClassItemDetailForm {
         this.moneyList = classItemDTO.money.slice(0, invDeg + 1);
         this.nowMoney = this.moneyList[invDeg];
 
-        if (invDeg === 1) {
-            this.profitMoney = 0;
-            this.profitNum = `0%`;
-        } else {
-            const prevMoney = this.moneyList[invDeg - 1];
-            this.profitMoney = this.nowMoney - prevMoney;
-            const percentChange = (this.profitMoney / prevMoney) * 100;
-            this.profitNum = `${percentChange.toFixed(2)}%`;
-        }
+        const prevMoney = this.moneyList[invDeg - 1];
+        this.profitMoney = this.nowMoney - prevMoney;
+        const percentChange = (this.profitMoney / prevMoney) * 100;
+        this.profitNum = `${percentChange.toFixed(2)}%`;
 
         this.itemInfo = classItemDTO.item.info;
         this.money = classItemDTO.item.money;
