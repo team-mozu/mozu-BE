@@ -1,0 +1,1511 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>mozu-BE documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">mozu-BE documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >TeamRepository</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/team/domain/persistence/team.repository.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findClassByTeamId" >findClassByTeamId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamById" >findTeamById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamHoldItemById" >findTeamHoldItemById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamInvOrderById" >findTeamInvOrderById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamOrderById" >findTeamOrderById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findTeamRankById" >findTeamRankById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#holdItemSave" >holdItemSave</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#holdItemUpdateNow" >holdItemUpdateNow</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#orderSave" >orderSave</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#save" >save</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#teamMoneyUpdate" >teamMoneyUpdate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(typeormRepository: <a href="../entitys/TeamEntity.html" target="_self">Repository&lt;TeamEntity&gt;</a>, orderTypeormRepository: <a href="../entitys/TeamOrderEntity.html" target="_self">Repository&lt;TeamOrderEntity&gt;</a>, holdItemTypeormRepository: Repository<HoldItemEntity>, mapper: <a href="../injectables/TeamDomainMapper.html" target="_self">TeamDomainMapper</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/team/domain/persistence/team.repository.ts:16</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>typeormRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/TeamEntity.html" target="_self" >Repository&lt;TeamEntity&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>orderTypeormRepository</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/TeamOrderEntity.html" target="_self" >Repository&lt;TeamOrderEntity&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>holdItemTypeormRepository</td>
+                                                  
+                                                        <td>
+                                                                    <code>Repository&lt;HoldItemEntity&gt;</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>mapper</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TeamDomainMapper.html" target="_self" >TeamDomainMapper</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findClassByTeamId"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findClassByTeamId</b></span>
+                        <a href="#findClassByTeamId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findClassByTeamId(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamById</b></span>
+                        <a href="#findTeamById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamById(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/TeamDTO.html" target="_self" >Promise&lt;TeamDTO&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamHoldItemById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamHoldItemById</b></span>
+                        <a href="#findTeamHoldItemById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamHoldItemById(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;HoldItemDTO[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamInvOrderById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamInvOrderById</b></span>
+                        <a href="#findTeamInvOrderById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamInvOrderById(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:89</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/TeamOrderDTO.html" target="_self" >Promise&lt;TeamOrderDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamOrderById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamOrderById</b></span>
+                        <a href="#findTeamOrderById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamOrderById(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/TeamOrderDTO.html" target="_self" >Promise&lt;TeamOrderDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findTeamRankById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findTeamRankById</b></span>
+                        <a href="#findTeamRankById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findTeamRankById(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/TeamDTO.html" target="_self" >Promise&lt;TeamDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="holdItemSave"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>holdItemSave</b></span>
+                        <a href="#holdItemSave"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>holdItemSave(teamOrderDto: <a href="../classes/TeamOrderDTO.html" target="_self">TeamOrderDTO</a>, teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamOrderDto</td>
+                                            <td>
+                                                            <code><a href="../classes/TeamOrderDTO.html" target="_self" >TeamOrderDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="holdItemUpdateNow"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>holdItemUpdateNow</b></span>
+                        <a href="#holdItemUpdateNow"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>holdItemUpdateNow(teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="247"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:247</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;HoldItemDTO[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="orderSave"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>orderSave</b></span>
+                        <a href="#orderSave"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>orderSave(teamOrderDto: <a href="../classes/TeamOrderDTO.html" target="_self">TeamOrderDTO[]</a>, teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamOrderDto</td>
+                                            <td>
+                                                            <code><a href="../classes/TeamOrderDTO.html" target="_self" >TeamOrderDTO[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/TeamOrderDTO.html" target="_self" >Promise&lt;TeamOrderDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="save"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>save</b></span>
+                        <a href="#save"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>save(teamDTO: <a href="../classes/TeamDTO.html" target="_self">TeamDTO</a>, classId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:112</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>teamDTO</td>
+                                            <td>
+                                                            <code><a href="../classes/TeamDTO.html" target="_self" >TeamDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>classId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="teamMoneyUpdate"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>teamMoneyUpdate</b></span>
+                        <a href="#teamMoneyUpdate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>teamMoneyUpdate(orderDTOs: <a href="../classes/TeamOrderDTO.html" target="_self">TeamOrderDTO[]</a>, holdItemDTOs: HoldItemDTO[], teamId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="279"
+                                    class="link-to-prism">src/team/domain/persistence/team.repository.ts:279</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>orderDTOs</td>
+                                            <td>
+                                                            <code><a href="../classes/TeamOrderDTO.html" target="_self" >TeamOrderDTO[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>holdItemDTOs</td>
+                                            <td>
+                                                        <code>HoldItemDTO[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>teamId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/TeamDTO.html" target="_self" >Promise&lt;TeamDTO&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BadRequestException, Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;;
+import { TeamDomainReader } from &#x27;../team.domain.reader&#x27;;
+import { TeamDomainWrtier } from &#x27;../team.domain.writer&#x27;;
+import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
+import { TeamEntity } from &#x27;./team.entity&#x27;;
+import { Repository } from &#x27;typeorm&#x27;;
+import { TeamDomainMapper } from &#x27;./team.domain.mapper&#x27;;
+import { TeamDTO } from &#x27;src/team/common/data/team.dto&#x27;;
+import { TeamOrderDTO } from &#x27;src/team/common/data/team.order.dto&#x27;;
+import { TeamOrderEntity } from &#x27;./team.order.entity&#x27;;
+import { HoldItemEntity } from &#x27;./holdItem.entity&#x27;;
+import { HoldItemDTO } from &#x27;src/team/common/data/team.holdItem.dto&#x27;;
+import { OrderType } from &#x27;src/common/data/order.type&#x27;;
+
+@Injectable()
+export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
+    constructor(
+        @InjectRepository(TeamEntity)
+        private readonly typeormRepository: Repository&lt;TeamEntity&gt;,
+        @InjectRepository(TeamOrderEntity)
+        private readonly orderTypeormRepository: Repository&lt;TeamOrderEntity&gt;,
+        @InjectRepository(HoldItemEntity)
+        private readonly holdItemTypeormRepository: Repository&lt;HoldItemEntity&gt;,
+        private readonly mapper: TeamDomainMapper
+    ) {}
+
+    async findTeamById(teamId: number): Promise&lt;TeamDTO&gt; {
+        const team &#x3D; await this.typeormRepository.findOne({
+            where: {
+                id: teamId
+            }
+        });
+
+        return await this.mapper.toTeamDomain(team);
+    }
+
+    async findTeamHoldItemById(teamId: number): Promise&lt;HoldItemDTO[]&gt; {
+        const holdItems &#x3D; await this.holdItemTypeormRepository.find({
+            where: {
+                team: {
+                    id: teamId
+                }
+            },
+            order: {
+                itemId: &#x27;ASC&#x27;
+            }
+        });
+
+        return await Promise.all(
+            holdItems.map((holdItem) &#x3D;&gt; this.mapper.toTeamHoldItemDomain(holdItem))
+        );
+    }
+
+    async findTeamOrderById(teamId: number): Promise&lt;TeamOrderDTO[]&gt; {
+        const orders &#x3D; await this.orderTypeormRepository.find({
+            where: {
+                team: {
+                    id: teamId
+                }
+            },
+            order: {
+                id: &#x27;ASC&#x27;
+            }
+        });
+
+        return await Promise.all(orders.map((order) &#x3D;&gt; this.mapper.toTeamOrderDomain(order)));
+    }
+
+    async findTeamRankById(teamId: number): Promise&lt;TeamDTO[]&gt; {
+        const team &#x3D; await this.typeormRepository.findOne({
+            where: {
+                id: teamId
+            },
+            relations: [&#x27;class&#x27;]
+        });
+
+        const teams &#x3D; await this.typeormRepository.find({
+            where: {
+                classNum: team.class.classNum
+            },
+            order: {
+                totalMoney: &#x27;DESC&#x27;
+            }
+        });
+
+        return await Promise.all(teams.map((team) &#x3D;&gt; this.mapper.toTeamDomain(team)));
+    }
+
+    async findTeamInvOrderById(teamId: number): Promise&lt;TeamOrderDTO[]&gt; {
+        const team &#x3D; await this.typeormRepository.findOne({
+            where: {
+                id: teamId
+            },
+            relations: [&#x27;class&#x27;]
+        });
+
+        const orders &#x3D; await this.orderTypeormRepository.find({
+            where: {
+                invDeg: team.invDeg - 1,
+                team: {
+                    id: teamId
+                }
+            },
+            order: {
+                itemId: &#x27;ASC&#x27;
+            }
+        });
+
+        return await Promise.all(orders.map((order) &#x3D;&gt; this.mapper.toTeamOrderDomain(order)));
+    }
+
+    async save(teamDTO: TeamDTO, classId: number): Promise&lt;[TeamDTO, number]&gt; {
+        const team &#x3D; await this.mapper.toTeamEntity(teamDTO);
+
+        const newTeam &#x3D; await this.typeormRepository.create({
+            ...team,
+            class: {
+                id: classId
+            }
+        });
+
+        const savedTeam &#x3D; await this.typeormRepository.save(newTeam);
+
+        const findTeam &#x3D; await this.typeormRepository.findOne({
+            where: {
+                id: savedTeam.id
+            },
+            relations: [&#x27;class&#x27;]
+        });
+
+        return [await this.mapper.toTeamDomain(savedTeam), findTeam.class.id];
+    }
+
+    async findClassByTeamId(teamId: number): Promise&lt;number&gt; {
+        const classEntity &#x3D; await this.typeormRepository.findOne({
+            where: {
+                id: teamId
+            },
+            relations: [&#x27;class&#x27;]
+        });
+
+        return classEntity.class.id;
+    }
+
+    async orderSave(teamOrderDto: TeamOrderDTO[], teamId: number): Promise&lt;TeamOrderDTO[]&gt; {
+        const team &#x3D; await this.typeormRepository.findOne({
+            where: { id: teamId },
+            relations: [&#x27;orders&#x27;, &#x27;class&#x27;]
+        });
+
+        if (!team) {
+            throw new NotFoundException(&#x60;해당하는 id(${teamId})의 참여 팀이 존재하지 않습니다.&#x60;);
+        }
+
+        if (team.invDeg !&#x3D;&#x3D; team.class.curInvDeg) {
+            throw new BadRequestException(
+                &#x60;해당하는 id(${teamId})의 참여 팀은 이미 투자를 완료했습니다.&#x60;
+            );
+        }
+
+        const newOrders &#x3D; await Promise.all(
+            teamOrderDto.map(async (order) &#x3D;&gt; {
+                const orderEntity &#x3D; await this.mapper.toTeamOrderEntity(order);
+                orderEntity.invDeg &#x3D; team.class.curInvDeg;
+                orderEntity.team &#x3D; team;
+                return orderEntity;
+            })
+        );
+
+        const savedOrders &#x3D; await this.orderTypeormRepository.save(newOrders);
+
+        return await Promise.all(savedOrders.map((order) &#x3D;&gt; this.mapper.toTeamOrderDomain(order)));
+    }
+
+    async holdItemSave(teamOrderDto: TeamOrderDTO, teamId: number): Promise&lt;void&gt; {
+        const holdItem &#x3D; await this.holdItemTypeormRepository.findOne({
+            where: {
+                itemId: teamOrderDto.itemId,
+                team: { id: teamId }
+            }
+        });
+
+        // 매수의 경우
+        if (teamOrderDto.orderType &#x3D;&#x3D;&#x3D; OrderType.BUY) {
+            // 보유 중인 주식의 경우
+            if (holdItem) {
+                // 기존의 보유 주식을 업데이트 해야함
+
+                // 보유 주식 정보 저장
+                const totalMoney &#x3D;
+                    holdItem.totalMoney + teamOrderDto.itemMoney * teamOrderDto.orderCount;
+                const newCount &#x3D; holdItem.itemCnt + teamOrderDto.orderCount;
+                holdItem.buyMoney &#x3D; totalMoney / newCount;
+                holdItem.itemCnt &#x3D; newCount;
+                holdItem.totalMoney &#x3D; totalMoney;
+
+                await this.holdItemTypeormRepository.save(holdItem);
+            }
+            // 새롭게 매수한 주식의 경우
+            else {
+                // 새롭게 보유 주식을 만들어야 함.
+                const newHoldItem &#x3D; new HoldItemDTO(
+                    null,
+                    teamOrderDto.itemId,
+                    teamOrderDto.itemName,
+                    teamOrderDto.orderCount,
+                    teamOrderDto.itemMoney,
+                    teamOrderDto.totalMoney,
+                    0, // nowMoney,
+                    0, // valMoney,
+                    0, // valProfit,
+                    0 // profitNum
+                );
+                const mapHoldItem &#x3D; await this.mapper.toTeamHoldItemEntity(newHoldItem);
+                const createHoldItem &#x3D; await this.holdItemTypeormRepository.create({
+                    ...mapHoldItem,
+                    team: {
+                        id: teamId
+                    }
+                });
+
+                await this.holdItemTypeormRepository.save(createHoldItem);
+            }
+        }
+
+        // 매도의 경우
+        else {
+            if (holdItem) {
+                // 보유 중인 주식을 매도하는 경우
+                holdItem.itemCnt &#x3D; holdItem.itemCnt - teamOrderDto.orderCount;
+
+                if (holdItem.itemCnt &#x3D;&#x3D;&#x3D; 0) {
+                    // 수량이 0인경우 -&gt; all 매도
+                    await this.holdItemTypeormRepository.remove(holdItem);
+                } else {
+                    holdItem.totalMoney &#x3D; holdItem.buyMoney * holdItem.itemCnt;
+                    await this.holdItemTypeormRepository.save(holdItem);
+                }
+            } else {
+                throw new NotFoundException(
+                    &#x27;해당 종목은 보유 중인 주식이 아니기에 매도가 불가능합니다.&#x27;
+                );
+            }
+        }
+    }
+
+    async holdItemUpdateNow(teamId: number): Promise&lt;HoldItemDTO[]&gt; {
+        const team &#x3D; await this.typeormRepository.findOne({
+            where: { id: teamId },
+            relations: [&#x27;class&#x27;, &#x27;holdItems&#x27;, &#x27;class.classItems&#x27;]
+        });
+
+        if (!team) {
+            throw new NotFoundException(&#x60;해당하는 id(${teamId})의 참여 팀이 존재하지 않습니다.&#x60;);
+        }
+
+        const holdItems &#x3D; team.holdItems;
+        const teamClass &#x3D; team.class;
+        const classItems &#x3D; team.class.classItems;
+
+        const newHoldItems &#x3D; holdItems.map((holdItem) &#x3D;&gt; {
+            const classItem &#x3D; classItems.filter((item) &#x3D;&gt; item.itemId &#x3D;&#x3D;&#x3D; holdItem.itemId);
+            const nowMoney &#x3D; classItem[0].money[teamClass.curInvDeg];
+            const valMoney &#x3D; nowMoney * holdItem.itemCnt;
+            const valProfit &#x3D; valMoney - holdItem.totalMoney;
+            const profitNum &#x3D; (valProfit / holdItem.totalMoney) * 100;
+            holdItem.nowMoney &#x3D; nowMoney;
+            holdItem.valMoney &#x3D; valMoney;
+            holdItem.valProfit &#x3D; valProfit;
+            holdItem.profitNum &#x3D; profitNum;
+            return holdItem;
+        });
+
+        const updateHoldItems &#x3D; await this.holdItemTypeormRepository.save(newHoldItems);
+
+        return updateHoldItems;
+    }
+
+    async teamMoneyUpdate(
+        orderDTOs: TeamOrderDTO[],
+        holdItemDTOs: HoldItemDTO[],
+        teamId: number
+    ): Promise&lt;TeamDTO&gt; {
+        const team &#x3D; await this.typeormRepository.findOne({
+            where: {
+                id: teamId
+            }
+        });
+        let valueMoney: number &#x3D; 0;
+
+        await Promise.all(
+            orderDTOs.map((order) &#x3D;&gt; {
+                if (order.orderType &#x3D;&#x3D;&#x3D; OrderType.BUY) {
+                    team.cashMoney -&#x3D; order.totalMoney;
+                } else {
+                    team.cashMoney +&#x3D; order.totalMoney; // 매도한 금액 추가
+                    console.log(&#x27;매도 현금 계산 해보자&#x27;, team.cashMoney);
+                }
+            })
+        );
+
+        await Promise.all(
+            holdItemDTOs.map((holdItem) &#x3D;&gt; {
+                valueMoney +&#x3D; holdItem.valMoney;
+            })
+        );
+        team.valueMoney &#x3D; valueMoney;
+        team.totalMoney &#x3D; team.cashMoney + team.valueMoney;
+        team.invDeg +&#x3D; 1;
+
+        await this.typeormRepository.save(team);
+
+        return await this.mapper.toTeamDomain(team);
+    }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'TeamRepository.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
