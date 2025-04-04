@@ -12,11 +12,13 @@ import { GlobalJwtModule } from './common/module/jwt.module';
 import { GlobalConfigModule } from './common/module/config.module';
 import { TeamModule } from './team/team.module';
 import { HealthModule } from './health/health.module';
+import { GlobalDateTimeModule } from './common/dateTime/dateTime.module';
 
 @Module({
     imports: [
         GlobalConfigModule,
         GlobalJwtModule,
+        GlobalDateTimeModule,
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             useClass: TypeOrmConfigService
