@@ -17,6 +17,7 @@ import { randomInt, randomUUID } from 'crypto';
 import { SseService } from 'src/common/sse/sse.service';
 import { EventType } from 'src/common/sse/event.type';
 import { EventClassNextInvStartForm } from 'src/common/sse/event.form';
+import { DateTimeService } from 'src/common/dateTime/dateTime.service';
 
 @Injectable()
 export class ClassWriteServiceImpl implements ClassWrtieService {
@@ -25,7 +26,8 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
         private readonly classWriter: ClassDomainWrtier,
         private readonly httpService: HttpService,
         private readonly configService: ConfigService,
-        private readonly sseService: SseService
+        private readonly sseService: SseService,
+        private readonly dateTimeService: DateTimeService
     ) {}
 
     async create(
@@ -72,7 +74,7 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
 
         const classData = {
             ...classDTO,
-            createdAt: this.getDate()
+            createdAt: await this.dateTimeService.getNowDate()
         };
 
         return await this.classWriter.save(organId, classData, classItemDTO, classArticleDTO);
@@ -157,16 +159,6 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
             EventType.CLASS_NEXT_INV_START,
             new EventClassNextInvStartForm(classId, invDeg)
         );
-    }
-
-    private getDate(): string {
-        const date = new Date();
-        const options = {
-            timeZone: 'Asia/Seoul'
-        };
-        const koreanDate = new Intl.DateTimeFormat('en-CA', options).format(date);
-
-        return koreanDate;
     }
 
     private generateClassCode(): number {

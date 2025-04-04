@@ -2,12 +2,14 @@ import { ArticleDTO } from 'src/common/data/article/article.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { ArticleWriteService } from '../article.write.service';
 import { ArticleDomainWriter } from 'src/article/domain/article.domain.writer';
+import { DateTimeService } from 'src/common/dateTime/dateTime.service';
 
 @Injectable()
 export class ArticleWriteServiceImpl implements ArticleWriteService {
     constructor(
         @Inject('repository')
-        private readonly writer: ArticleDomainWriter
+        private readonly writer: ArticleDomainWriter,
+        private readonly dateTimeService: DateTimeService
     ) {}
 
     async create(
@@ -17,7 +19,7 @@ export class ArticleWriteServiceImpl implements ArticleWriteService {
     ): Promise<ArticleDTO> {
         const article = {
             ...articleDTO,
-            createDate: this.getDate()
+            createDate: await this.dateTimeService.getNowDate()
         };
 
         return await this.writer.save(article, file, organId);
@@ -34,15 +36,5 @@ export class ArticleWriteServiceImpl implements ArticleWriteService {
 
     async delete(articleId: number, organId: number): Promise<void> {
         return await this.writer.delete(articleId, organId);
-    }
-
-    private getDate(): string {
-        const date = new Date();
-        const options = {
-            timeZone: 'Asia/Seoul'
-        };
-        const koreanDate = new Intl.DateTimeFormat('en-CA', options).format(date); // 'en-CA'는 'YYYY-MM-DD' 형식
-
-        return koreanDate;
     }
 }
