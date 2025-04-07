@@ -105,11 +105,12 @@ export class TeamWriteServiceImpl implements TeamWriteService {
         const orders = await this.writer.orderSave(teamOrderDto, teamId);
         console.log(orders);
 
-        await Promise.all(
-            orders.map((order) => {
-                this.writer.holdItemSave(order, teamId);
-            })
-        );
+        // 모든 거래를 순차적으로 처리
+        for (const order of orders) {
+            await this.writer.holdItemSave(order, teamId);
+        }
+
+        // 모든 거래가 처리된 후 보유 주식 업데이트
         const holdItems = await this.writer.holdItemUpdateNow(teamId);
         const team = await this.writer.teamMoneyUpdate(orders, holdItems, teamId);
 
