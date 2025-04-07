@@ -11,7 +11,6 @@ import {
 } from './form/response/response.team';
 import { HoldItemDTO } from '../common/data/team.holdItem.dto';
 import { TeamOrderDTO } from '../common/data/team.order.dto';
-import { TeamDTO } from '../common/data/team.dto';
 
 @Controller('/team')
 export class TeamReadAdapter {

@@ -3,7 +3,7 @@ import { TeamDomainReader } from '../team.domain.reader';
 import { TeamDomainWrtier } from '../team.domain.writer';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeamEntity } from './team.entity';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { TeamDomainMapper } from './team.domain.mapper';
 import { TeamDTO } from 'src/team/common/data/team.dto';
 import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
@@ -185,8 +185,6 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
             // 보유 중인 주식의 경우
             if (holdItem) {
                 // 기존의 보유 주식을 업데이트 해야함
-
-                // 보유 주식 정보 저장
                 const totalMoney =
                     holdItem.totalMoney + teamOrderDto.itemMoney * teamOrderDto.orderCount;
                 const newCount = holdItem.itemCnt + teamOrderDto.orderCount;
@@ -222,7 +220,6 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
                 await this.holdItemTypeormRepository.save(createHoldItem);
             }
         }
-
         // 매도의 경우
         else {
             if (holdItem) {
@@ -233,6 +230,7 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
                     // 수량이 0인경우 -> all 매도
                     await this.holdItemTypeormRepository.remove(holdItem);
                 } else {
+                    // 매도 후 남은 수량이 있는 경우
                     holdItem.totalMoney = holdItem.buyMoney * holdItem.itemCnt;
                     await this.holdItemTypeormRepository.save(holdItem);
                 }
@@ -260,7 +258,7 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
 
         const newHoldItems = holdItems.map((holdItem) => {
             const classItem = classItems.filter((item) => item.itemId === holdItem.itemId);
-            const nowMoney = classItem[0].money[teamClass.curInvDeg];
+            const nowMoney = classItem[0].money[teamClass.curInvDeg + 1];
             const valMoney = nowMoney * holdItem.itemCnt;
             const valProfit = valMoney - holdItem.totalMoney;
             const profitNum = (valProfit / holdItem.totalMoney) * 100;
@@ -272,7 +270,6 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
         });
 
         const updateHoldItems = await this.holdItemTypeormRepository.save(newHoldItems);
-
         return updateHoldItems;
     }
 

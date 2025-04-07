@@ -15,6 +15,7 @@ import { SseService } from 'src/common/sse/sse.service';
 import { EventType } from 'src/common/sse/event.type';
 import { EventTeamInvEndForm, EventTeamPartInForm } from 'src/common/sse/event.form';
 import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
+import { DateTimeService } from 'src/common/dateTime/dateTime.service';
 
 @Injectable()
 export class TeamWriteServiceImpl implements TeamWriteService {
@@ -24,7 +25,8 @@ export class TeamWriteServiceImpl implements TeamWriteService {
         private readonly sseService: SseService,
         private readonly httpService: HttpService,
         private readonly configService: ConfigService,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        private readonly dateTimeService: DateTimeService
     ) {}
 
     async partInClass(teamDTO: TeamDTO): Promise<string> {
@@ -49,7 +51,7 @@ export class TeamWriteServiceImpl implements TeamWriteService {
             totalMoney: +existingClass.data.baseMoney,
             cashMoney: +existingClass.data.baseMoney,
             valueMoney: 0,
-            createdAt: this.getDate()
+            createdAt: await this.dateTimeService.getNowDate()
         };
 
         const [team, classId] = await this.writer.save(teamData, +existingClass.data.id);
@@ -65,6 +67,19 @@ export class TeamWriteServiceImpl implements TeamWriteService {
         return await this.signToken(team);
     }
 
+    /**
+     *
+     * @param teamOrderDto
+     * @param teamId
+     *
+     * 로직
+     *
+     * 1. 거래 내역 items 유효성 검사
+     * 2. 거래내역 저장
+     * 3. 보유 주식 저장
+     * 4. 참여 팀 정보 저장
+     * 5. sse로 선생님 클라이언트로 정보 전송
+     */
     async endInv(teamOrderDto: TeamOrderDTO[], teamId: number): Promise<void> {
         const itemIds = teamOrderDto.map((team) => team.itemId);
 
@@ -88,7 +103,14 @@ export class TeamWriteServiceImpl implements TeamWriteService {
         }
 
         const orders = await this.writer.orderSave(teamOrderDto, teamId);
-        await Promise.all(orders.map((order) => this.writer.holdItemSave(order, teamId)));
+        console.log(orders);
+
+        // 모든 거래를 순차적으로 처리
+        for (const order of orders) {
+            await this.writer.holdItemSave(order, teamId);
+        }
+
+        // 모든 거래가 처리된 후 보유 주식 업데이트
         const holdItems = await this.writer.holdItemUpdateNow(teamId);
         const team = await this.writer.teamMoneyUpdate(orders, holdItems, teamId);
 
@@ -104,16 +126,6 @@ export class TeamWriteServiceImpl implements TeamWriteService {
                 ((team.totalMoney - team.baseMoney) / team.baseMoney) * 100
             )
         );
-    }
-
-    private getDate(): string {
-        const date = new Date();
-        const options = {
-            timeZone: 'Asia/Seoul'
-        };
-        const koreanDate = new Intl.DateTimeFormat('en-CA', options).format(date);
-
-        return koreanDate;
     }
 
     async signToken(organ: TeamDTO) {
