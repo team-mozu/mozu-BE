@@ -12,7 +12,7 @@ export class OrganWriteAdapter {
         private readonly requestOrganFormMapper: RequestOrganFormMapper
     ) {}
 
-    @Post('/create')
+    @Post()
     async create(@Body() form: RequestOrganForm): Promise<OrganDTO> {
         const internalDTO = await this.requestOrganFormMapper.toDTO(form);
 
