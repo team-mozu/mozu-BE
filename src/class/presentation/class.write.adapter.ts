@@ -26,7 +26,7 @@ export class ClassWrtieAdapter {
         private readonly requestClassFormMapper: RequestClassFormMapper
     ) {}
 
-    @Post('/create')
+    @Post()
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async create(
@@ -50,7 +50,7 @@ export class ClassWrtieAdapter {
         );
     }
 
-    @Post('/update/:id')
+    @Post('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async update(
@@ -86,7 +86,7 @@ export class ClassWrtieAdapter {
         return await this.writeService.changeStarYN(+id, classId);
     }
 
-    @Delete('/delete/:id')
+    @Delete('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async delete(@Param('id', ParseIntPipe) classId: number, @UserID() id: string): Promise<void> {
