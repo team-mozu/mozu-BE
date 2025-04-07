@@ -28,7 +28,7 @@ export class ArticleWriteAdapter {
         private readonly requestArticleFormMapper: RequestArticleFormMapper
     ) {}
 
-    @Post('/create')
+    @Post()
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     @UseInterceptors(FileInterceptor('image'))
@@ -42,7 +42,7 @@ export class ArticleWriteAdapter {
         return await this.writeService.create(internalDTO, file, +id);
     }
 
-    @Post('/update/:id')
+    @Post('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     @UseInterceptors(FileInterceptor('image'))
@@ -57,7 +57,7 @@ export class ArticleWriteAdapter {
         return await this.writeService.update(articleId, internalDTO, file, +id);
     }
 
-    @Delete('/delete/:id')
+    @Delete('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async delete(
