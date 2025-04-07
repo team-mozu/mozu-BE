@@ -29,7 +29,7 @@ export class ItemWrtieAdapter {
         private readonly requestItemFormMapper: RequestItemFormMapper
     ) {}
 
-    @Post('/create')
+    @Post()
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     @UseInterceptors(FileInterceptor('logo'))
@@ -43,7 +43,7 @@ export class ItemWrtieAdapter {
         return await this.writeService.create(internalDTO, file, +id);
     }
 
-    @Post('/update/:id')
+    @Post('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     @UseInterceptors(FileInterceptor('logo'))
@@ -58,7 +58,7 @@ export class ItemWrtieAdapter {
         return await this.writeService.update(itemId, internalDTO, file, +id);
     }
 
-    @Delete('/delete/:id')
+    @Delete('/:id')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
     async delete(@Param('id', ParseIntPipe) itemId: number, @UserID() id: string): Promise<void> {
