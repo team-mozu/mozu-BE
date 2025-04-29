@@ -44,3 +44,12 @@ export class EventClassNextInvStartForm {
         this.nextInvDeg = nextInvDeg;
     }
 }
+
+export class EventClassCancelForm {
+    classId: number;
+
+    constructor(classId: number) {
+        this.classId = classId;
+    }
+}
+

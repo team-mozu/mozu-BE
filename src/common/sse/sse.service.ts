@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Response } from 'express';
 import { EventType } from './event.type';
-import { EventClassNextInvStartForm, EventTeamInvEndForm, EventTeamPartInForm } from './event.form';
+import { EventClassNextInvStartForm, EventTeamInvEndForm, EventTeamPartInForm, EventClassCancelForm } from './event.form';
 
 @Injectable()
 export class SseService {
@@ -71,7 +71,7 @@ export class SseService {
         }
     }
 
-    sendToAllStudents(event: EventType, data: EventClassNextInvStartForm) {
+    sendToAllStudents(event: EventType, data: EventClassNextInvStartForm | EventClassCancelForm) {
         this.studentClients.forEach((clients) => {
             clients.forEach((res) => {
                 res.write(`event: ${event}\n`);
