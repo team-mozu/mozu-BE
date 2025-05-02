@@ -84,9 +84,9 @@ export class ClassRepository implements ClassDomainReader, ClassDomainWrtier {
             }
         });
 
-        if (!existingClass) {
+        if (!existingClass || existingClass.curInvDeg !== 0) {
             throw new NotFoundException(
-                `해당하는 id(${classNum})의 수업이 존재하지 않거나 진행중이 아닙니다.`
+                `해당하는 id(${classNum})의 수업이 존재하지 않거나 참여 가능한 수업이 아닙니다.`
             );
         }
 
