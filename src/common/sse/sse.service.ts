@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Response } from 'express';
 import { EventType } from './event.type';
-import { EventClassNextInvStartForm, EventTeamInvEndForm, EventTeamPartInForm, EventClassCancelForm } from './event.form';
+import {
+    EventClassNextInvStartForm,
+    EventTeamInvEndForm,
+    EventTeamPartInForm,
+    EventClassCancelForm
+} from './event.form';
 
 @Injectable()
 export class SseService {
@@ -27,6 +32,7 @@ export class SseService {
         );
 
         res.on('close', () => {
+            this.sendToAllStudents(EventType.CLASS_CANCEL, new EventClassCancelForm(classId));
             this.removeTeacherClient(classId, res);
         });
     }
