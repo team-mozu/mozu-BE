@@ -16,7 +16,7 @@ import { ClassDomainWrtier } from 'src/class/domain/class.domain.writer';
 import { randomInt, randomUUID } from 'crypto';
 import { SseService } from 'src/common/sse/sse.service';
 import { EventType } from 'src/common/sse/event.type';
-import { EventClassNextInvStartForm } from 'src/common/sse/event.form';
+import { EventClassCancelForm, EventClassNextInvStartForm } from 'src/common/sse/event.form';
 import { DateTimeService } from 'src/common/dateTime/dateTime.service';
 
 @Injectable()
@@ -149,6 +149,11 @@ export class ClassWriteServiceImpl implements ClassWrtieService {
     }
 
     async stopClass(organId: number, classId: number): Promise<void> {
+        await this.sseService.sendToAllStudents(
+            EventType.CLASS_CANCEL,
+            new EventClassCancelForm(classId)
+        );
+
         return await this.classWriter.stopClass(organId, classId);
     }
 
