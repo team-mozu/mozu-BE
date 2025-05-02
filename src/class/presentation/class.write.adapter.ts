@@ -17,9 +17,6 @@ import { Permission } from 'src/common/decorator/authority.decorator';
 import { Authority } from 'src/common/data/Role';
 import { UserID } from 'src/common/decorator/user.decorator';
 import { ResponseClassCodeForm } from './form/response/response.classCode.form';
-import { SseService } from 'src/common/sse/sse.service';
-import { EventType } from 'src/common/sse/event.type';
-import { EventClassCancelForm } from 'src/common/sse/event.form';
 
 @Controller('/class')
 export class ClassWrtieAdapter {
@@ -27,8 +24,7 @@ export class ClassWrtieAdapter {
         @Inject('write_impl')
         private readonly writeService: ClassWrtieService,
         private readonly requestClassFormMapper: RequestClassFormMapper
-        ,private readonly sseService: SseService
-    ) { }
+    ) {}
 
     @Post()
     @UseGuards(JwtAuthGuard)
@@ -117,8 +113,6 @@ export class ClassWrtieAdapter {
         @UserID() id: string
     ): Promise<void> {
         await this.writeService.stopClass(+id, classId);
-
-        await this.sseService.sendToAllStudents(EventType.CLASS_CANCEL, new EventClassCancelForm(classId))
     }
 
     @Post('/next/:id')
