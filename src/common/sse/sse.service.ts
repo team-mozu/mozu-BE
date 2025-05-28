@@ -25,13 +25,19 @@ export class SseService {
             this.classClients.set(classId, []);
         }
         this.classClients.get(classId)!.push(res);
-
+    
         this.setupSseHeaders(res);
         res.write(
             `data: ${JSON.stringify({ message: `id ${classId}번의 수업 기관 클라이언트 SSE 연결되었습니다.` })}\n\n`
         );
-
+    
+        // 30초마다 ping 이벤트 전송
+        const pingInterval = setInterval(() => {
+            res.write(`event: ping\ndata: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
+        }, 30000);
+    
         res.on('close', () => {
+            clearInterval(pingInterval); // 연결 종료 시 interval 정리
             this.sendToAllStudents(EventType.CLASS_CANCEL, new EventClassCancelForm(classId));
             this.removeTeacherClient(classId, res);
         });
@@ -42,13 +48,19 @@ export class SseService {
             this.studentClients.set(studentId, []);
         }
         this.studentClients.get(studentId)!.push(res);
-
+    
         this.setupSseHeaders(res);
         res.write(
             `data: ${JSON.stringify({ message: `id ${studentId}번의 학생 클라이언트 SSE 연결되었습니다.` })}\n\n`
         );
-
+    
+        // 30초마다 ping 이벤트 전송
+        const pingInterval = setInterval(() => {
+            res.write(`event: ping\ndata: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
+        }, 30000);
+    
         res.on('close', () => {
+            clearInterval(pingInterval); // 연결 종료 시 interval 정리
             this.removeStudentClient(studentId, res);
         });
     }
