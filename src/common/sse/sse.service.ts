@@ -12,12 +12,29 @@ import {
 export class SseService {
     private classClients: Map<number, Response[]> = new Map();
     private studentClients: Map<number, Response[]> = new Map();
+    private pingIntervals: Map<Response, NodeJS.Timeout> = new Map();
 
     private setupSseHeaders(res: Response) {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
         res.flushHeaders(); // 헤더 강제 플러시
+    }
+
+    private setupPingInterval(res: Response) {
+        const interval = setInterval(() => {
+            res.write(`event: ping\ndata: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
+        }, 1000);
+        
+        this.pingIntervals.set(res, interval);
+    }
+
+    private clearPingInterval(res: Response) {
+        const interval = this.pingIntervals.get(res);
+        if (interval) {
+            clearInterval(interval);
+            this.pingIntervals.delete(res);
+        }
     }
 
     addTeacherClient(classId: number, res: Response) {
@@ -27,17 +44,14 @@ export class SseService {
         this.classClients.get(classId)!.push(res);
     
         this.setupSseHeaders(res);
+        this.setupPingInterval(res);
+    
         res.write(
             `data: ${JSON.stringify({ message: `id ${classId}번의 수업 기관 클라이언트 SSE 연결되었습니다.` })}\n\n`
         );
     
-        // 30초마다 ping 이벤트 전송
-        const pingInterval = setInterval(() => {
-            res.write(`event: ping\ndata: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
-        }, 30000);
-    
         res.on('close', () => {
-            clearInterval(pingInterval); // 연결 종료 시 interval 정리
+            this.clearPingInterval(res);
             this.sendToAllStudents(EventType.CLASS_CANCEL, new EventClassCancelForm(classId));
             this.removeTeacherClient(classId, res);
         });
@@ -50,17 +64,14 @@ export class SseService {
         this.studentClients.get(studentId)!.push(res);
     
         this.setupSseHeaders(res);
+        this.setupPingInterval(res);
+    
         res.write(
             `data: ${JSON.stringify({ message: `id ${studentId}번의 학생 클라이언트 SSE 연결되었습니다.` })}\n\n`
         );
     
-        // 30초마다 ping 이벤트 전송
-        const pingInterval = setInterval(() => {
-            res.write(`event: ping\ndata: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
-        }, 30000);
-    
         res.on('close', () => {
-            clearInterval(pingInterval); // 연결 종료 시 interval 정리
+            this.clearPingInterval(res);
             this.removeStudentClient(studentId, res);
         });
     }
