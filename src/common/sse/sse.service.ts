@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { Response } from 'express';
 import { EventType } from './event.type';
 import {
@@ -9,7 +9,7 @@ import {
 } from './event.form';
 
 @Injectable()
-export class SseService {
+export class SseService implements OnModuleDestroy {
     private classClients: Map<number, Response[]> = new Map();
     private studentClients: Map<number, Response[]> = new Map();
     private pingIntervals: Map<Response, NodeJS.Timeout> = new Map();
@@ -18,14 +18,28 @@ export class SseService {
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
-        res.flushHeaders(); // 헤더 강제 플러시
+        res.setHeader('X-Accel-Buffering', 'no'); // Nginx 프록시 사용 시 필요
+        res.flushHeaders();
     }
 
     private setupPingInterval(res: Response) {
+        // 이미 존재하는 interval이 있다면 제거
+        this.clearPingInterval(res);
+
         const interval = setInterval(() => {
-            res.write(`event: ping\ndata: ${JSON.stringify({ timestamp: new Date().toISOString() })}\n\n`);
+            try {
+                if (res.writableEnded) {
+                    this.clearPingInterval(res);
+                    return;
+                }
+                res.write('event: ping\n');
+                res.write('data: {"timestamp":"' + new Date().toISOString() + '"}\n\n');
+            } catch (error) {
+                console.error('Ping send error:', error);
+                this.clearPingInterval(res);
+            }
         }, 1000);
-        
+
         this.pingIntervals.set(res, interval);
     }
 
@@ -37,22 +51,34 @@ export class SseService {
         }
     }
 
+    private cleanupClient(res: Response) {
+        this.clearPingInterval(res);
+        if (!res.writableEnded) {
+            res.end();
+        }
+    }
+
     addTeacherClient(classId: number, res: Response) {
         if (!this.classClients.has(classId)) {
             this.classClients.set(classId, []);
         }
         this.classClients.get(classId)!.push(res);
-    
+
         this.setupSseHeaders(res);
         this.setupPingInterval(res);
-    
+
         res.write(
             `data: ${JSON.stringify({ message: `id ${classId}번의 수업 기관 클라이언트 SSE 연결되었습니다.` })}\n\n`
         );
-    
+
         res.on('close', () => {
-            this.clearPingInterval(res);
+            this.cleanupClient(res);
             this.sendToAllStudents(EventType.CLASS_CANCEL, new EventClassCancelForm(classId));
+            this.removeTeacherClient(classId, res);
+        });
+
+        res.on('error', () => {
+            this.cleanupClient(res);
             this.removeTeacherClient(classId, res);
         });
     }
@@ -62,16 +88,21 @@ export class SseService {
             this.studentClients.set(studentId, []);
         }
         this.studentClients.get(studentId)!.push(res);
-    
+
         this.setupSseHeaders(res);
         this.setupPingInterval(res);
-    
+
         res.write(
             `data: ${JSON.stringify({ message: `id ${studentId}번의 학생 클라이언트 SSE 연결되었습니다.` })}\n\n`
         );
-    
+
         res.on('close', () => {
-            this.clearPingInterval(res);
+            this.cleanupClient(res);
+            this.removeStudentClient(studentId, res);
+        });
+
+        res.on('error', () => {
+            this.cleanupClient(res);
             this.removeStudentClient(studentId, res);
         });
     }
@@ -129,5 +160,13 @@ export class SseService {
             );
         }
         res.end();
+    }
+
+    onModuleDestroy() {
+        // 모든 interval 정리
+        this.pingIntervals.forEach((interval) => {
+            clearInterval(interval);
+        });
+        this.pingIntervals.clear();
     }
 }
