@@ -8,6 +8,7 @@ export class TeamDTO {
     cashMoney: number;
     valueMoney: number;
     invDeg: number;
+    maxInvDeg: number;
     createdAt: string;
 
     constructor(
@@ -20,6 +21,7 @@ export class TeamDTO {
         cashMoney: number,
         valueMoney: number,
         invDeg: number,
+        maxInvDeg: number,
         createdAt: string
     ) {
         this.id = id;
@@ -31,6 +33,7 @@ export class TeamDTO {
         this.cashMoney = cashMoney;
         this.valueMoney = valueMoney;
         this.invDeg = invDeg;
+        this.maxInvDeg = maxInvDeg;
         this.createdAt = createdAt;
     }
 }
