@@ -20,6 +20,7 @@ export class ResponseTeamForm {
     valueProfit: number;
     profitNum: string;
     invDeg: number;
+    maxInvDeg: number;
 
     constructor(team: TeamDTO) {
         this.id = team.id;
@@ -29,6 +30,7 @@ export class ResponseTeamForm {
         this.cashMoney = team.cashMoney;
         this.valueMoney = team.valueMoney;
         this.invDeg = team.invDeg;
+        this.maxInvDeg = team.maxInvDeg;
 
         this.valueProfit = team.totalMoney - team.baseMoney;
         this.profitNum = `${((team.totalMoney - team.baseMoney) / team.baseMoney) * 100}%`;

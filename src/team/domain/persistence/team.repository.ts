@@ -28,7 +28,8 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
         const team = await this.typeormRepository.findOne({
             where: {
                 id: teamId
-            }
+            },
+            relations: ['class']
         });
 
         return await this.mapper.toTeamDomain(team);

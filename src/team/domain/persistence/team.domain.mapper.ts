@@ -22,6 +22,7 @@ export class TeamDomainMapper {
             entity.cashMoney,
             entity.valueMoney,
             entity.invDeg,
+            entity.class.maxInvDeg,
             entity.createdAt
         );
     }
