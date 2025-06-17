@@ -12,6 +12,8 @@ export class TeamDomainMapper {
     async toTeamDomain(entity: TeamEntity): Promise<TeamDTO> {
         if (!entity) return null;
 
+        console.log(entity);
+
         return new TeamDTO(
             entity.id,
             entity.name,

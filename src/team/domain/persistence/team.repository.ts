@@ -129,7 +129,7 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
             relations: ['class']
         });
 
-        return [await this.mapper.toTeamDomain(savedTeam), findTeam.class.id];
+        return [await this.mapper.toTeamDomain(findTeam), findTeam.class.id];
     }
 
     async findClassByTeamId(teamId: number): Promise<number> {
@@ -308,6 +308,13 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
 
         await this.typeormRepository.save(team);
 
-        return await this.mapper.toTeamDomain(team);
+        const savedTeam = await this.typeormRepository.findOne({
+            where: {
+                id: teamId
+            },
+            relations: ['class'] // class relation 명시적으로 포함
+        });
+
+        return await this.mapper.toTeamDomain(savedTeam);
     }
 }
