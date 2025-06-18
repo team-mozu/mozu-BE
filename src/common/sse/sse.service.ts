@@ -73,7 +73,6 @@ export class SseService implements OnModuleDestroy {
 
         res.on('close', () => {
             this.cleanupClient(res);
-            this.sendToAllStudents(EventType.CLASS_CANCEL, new EventClassCancelForm(classId));
             this.removeTeacherClient(classId, res);
         });
 
