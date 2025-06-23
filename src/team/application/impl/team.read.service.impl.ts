@@ -48,4 +48,11 @@ export class TeamReadServiceImpl implements TeamReadService {
     async getTeamInvOrderById(teamId: number): Promise<TeamOrderDTO[]> {
         return await this.reader.findTeamInvOrderById(teamId);
     }
+
+    async getTeamOrderByInvDeg(
+        teamId: number,
+        invDeg: number
+    ): Promise<TeamOrderDTO[]> {
+        return await this.reader.findTeamOrderByInvDeg(teamId, invDeg);
+    }
 }

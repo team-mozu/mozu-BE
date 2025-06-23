@@ -11,4 +11,8 @@ export interface TeamDomainReader {
 
     // 기관용
     findTeamInvOrderById(teamId: number): Promise<TeamOrderDTO[]>;
+    findTeamOrderByInvDeg(
+        teamId: number,
+        invDeg: number
+    ): Promise<TeamOrderDTO[]>;
 }
