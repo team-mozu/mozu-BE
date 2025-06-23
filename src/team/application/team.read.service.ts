@@ -13,4 +13,8 @@ export interface TeamReadService {
 
     // 기관용
     getTeamInvOrderById(teamId: number): Promise<TeamOrderDTO[]>;
+    getTeamOrderByInvDeg(
+        teamId: number,
+        invDeg: number
+    ): Promise<TeamOrderDTO[]>;
 }

@@ -110,6 +110,27 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
         return await Promise.all(orders.map((order) => this.mapper.toTeamOrderDomain(order)));
     }
 
+    async findTeamOrderByInvDeg(
+        teamId: number,
+        invDeg: number
+    ): Promise<TeamOrderDTO[]> {
+        const orders = await this.orderTypeormRepository.find({
+            where: {
+                invDeg: invDeg,
+                team: {
+                    id: teamId
+                }
+            },
+            order: {
+                id: 'ASC'
+            }
+        });
+
+        return await Promise.all(
+            orders.map((order) => this.mapper.toTeamOrderDomain(order))
+        );
+    }
+
     async save(teamDTO: TeamDTO, classId: number): Promise<[TeamDTO, number]> {
         const team = await this.mapper.toTeamEntity(teamDTO);
 
@@ -258,15 +279,28 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
         const classItems = team.class.classItems;
 
         const newHoldItems = holdItems.map((holdItem) => {
-            const classItem = classItems.filter((item) => item.itemId === holdItem.itemId);
-            const nowMoney = classItem[0].money[teamClass.curInvDeg + 1];
+            const classItem = classItems.find((item) => item.itemId === holdItem.itemId);
+
+            if (!classItem) {
+                throw new NotFoundException(
+                    `해당하는 id(${holdItem.itemId})의 수업 종목 정보가 존재하지 않습니다.`
+                );
+            }
+
+            const priceIndex = teamClass.curInvDeg + 1;
+            const nowMoney =
+                classItem.money[priceIndex] ??
+                classItem.money[classItem.money.length - 1];
+
             const valMoney = nowMoney * holdItem.itemCnt;
             const valProfit = valMoney - holdItem.totalMoney;
             const profitNum = (valProfit / holdItem.totalMoney) * 100;
+
             holdItem.nowMoney = nowMoney;
             holdItem.valMoney = valMoney;
             holdItem.valProfit = valProfit;
             holdItem.profitNum = profitNum;
+
             return holdItem;
         });
 
