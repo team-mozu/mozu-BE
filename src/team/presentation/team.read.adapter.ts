@@ -73,16 +73,6 @@ export class TeamReadAdapter {
     async getClassTeam(@Param('id', ParseIntPipe) teamId: number): Promise<TeamOrderDTO[]> {
         return await this.readService.getTeamInvOrderById(teamId);
     }
-
-    @Get('/:id/:deg')
-    @UseGuards(JwtAuthGuard)
-    @Permission([Authority.ORGAN])
-    async getClassTeamByInvDeg(
-        @Param('id', ParseIntPipe) teamId: number,
-        @Param('deg', ParseIntPipe) deg: number
-    ): Promise<TeamOrderDTO[]> {
-        return await this.readService.getTeamOrderByInvDeg(teamId, deg);
-    }
 }
 
 /**

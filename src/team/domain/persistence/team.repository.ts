@@ -97,7 +97,6 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
 
         const orders = await this.orderTypeormRepository.find({
             where: {
-                invDeg: team.invDeg - 1,
                 team: {
                     id: teamId
                 }
@@ -108,27 +107,6 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
         });
 
         return await Promise.all(orders.map((order) => this.mapper.toTeamOrderDomain(order)));
-    }
-
-    async findTeamOrderByInvDeg(
-        teamId: number,
-        invDeg: number
-    ): Promise<TeamOrderDTO[]> {
-        const orders = await this.orderTypeormRepository.find({
-            where: {
-                invDeg: invDeg,
-                team: {
-                    id: teamId
-                }
-            },
-            order: {
-                id: 'ASC'
-            }
-        });
-
-        return await Promise.all(
-            orders.map((order) => this.mapper.toTeamOrderDomain(order))
-        );
     }
 
     async save(teamDTO: TeamDTO, classId: number): Promise<[TeamDTO, number]> {
@@ -289,8 +267,7 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
 
             const priceIndex = teamClass.curInvDeg + 1;
             const nowMoney =
-                classItem.money[priceIndex] ??
-                classItem.money[classItem.money.length - 1];
+                classItem.money[priceIndex] ?? classItem.money[classItem.money.length - 1];
 
             const valMoney = nowMoney * holdItem.itemCnt;
             const valProfit = valMoney - holdItem.totalMoney;
