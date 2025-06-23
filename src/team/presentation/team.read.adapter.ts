@@ -74,6 +74,13 @@ export class TeamReadAdapter {
         return await this.readService.getTeamInvOrderById(teamId);
     }
 
+    @Get('/:id/holdItems')
+    @UseGuards(JwtAuthGuard)
+    @Permission([Authority.ORGAN])
+    async getClassTeamHoldItems(@Param('id', ParseIntPipe) teamId: number): Promise<HoldItemDTO[]> {
+        return await this.readService.getTeamHoldItemById(teamId);
+    }
+
     @Get('/:id/:deg')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])
