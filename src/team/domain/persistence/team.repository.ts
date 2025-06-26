@@ -81,7 +81,8 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
             },
             order: {
                 totalMoney: 'DESC'
-            }
+            },
+            relations: ['class']
         });
 
         return await Promise.all(teams.map((team) => this.mapper.toTeamDomain(team)));
