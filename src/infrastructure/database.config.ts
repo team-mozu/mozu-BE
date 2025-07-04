@@ -36,7 +36,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             ],
             synchronize: true, // production 단계에서 false로 변경
             autoLoadEntities: true,
-            logging: true,
+            logging: false, // 성능 향상을 위해 로깅 비활성화
             driver: true
         };
     }

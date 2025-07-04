@@ -3,7 +3,7 @@ import { TeamDomainReader } from '../team.domain.reader';
 import { TeamDomainWrtier } from '../team.domain.writer';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeamEntity } from './team.entity';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TeamDomainMapper } from './team.domain.mapper';
 import { TeamDTO } from 'src/team/common/data/team.dto';
 import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
@@ -68,22 +68,15 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
     }
 
     async findTeamRankById(teamId: number): Promise<TeamDTO[]> {
-        const team = await this.typeormRepository.findOne({
-            where: {
-                id: teamId
-            },
-            relations: ['class']
-        });
-
-        const teams = await this.typeormRepository.find({
-            where: {
-                classNum: team.class.classNum
-            },
-            order: {
-                totalMoney: 'DESC'
-            },
-            relations: ['class']
-        });
+        // 단일 쿼리로 최적화: 서브쿼리를 사용하여 더 효율적으로 조회
+        const teams = await this.typeormRepository
+            .createQueryBuilder('team')
+            .leftJoinAndSelect('team.class', 'class')
+            .where('team.classNum = (SELECT classNum FROM TB_CLASS_TEAM WHERE id = :teamId)', {
+                teamId
+            })
+            .orderBy('team.totalMoney', 'DESC')
+            .getMany();
 
         return await Promise.all(teams.map((team) => this.mapper.toTeamDomain(team)));
     }

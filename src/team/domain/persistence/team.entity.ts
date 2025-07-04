@@ -1,9 +1,18 @@
 import { ClassEntity } from 'src/class/domain/persistence/entity/class.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    Index
+} from 'typeorm';
 import { TeamOrderEntity } from './team.order.entity';
 import { HoldItemEntity } from './holdItem.entity';
 
 @Entity('TB_CLASS_TEAM')
+@Index('idx_class_num_total_money', ['classNum', 'totalMoney'])
 export class TeamEntity {
     @PrimaryGeneratedColumn('increment', { name: 'CLASS_TEAM_ID' })
     id: number;
@@ -85,10 +94,10 @@ export class TeamEntity {
     @JoinColumn({ name: 'CLASS_ID', referencedColumnName: 'id' })
     class: ClassEntity;
 
-    @OneToMany(() => TeamOrderEntity, (orders) => orders.team, { cascade: true, eager: true })
+    @OneToMany(() => TeamOrderEntity, (orders) => orders.team, { cascade: true })
     orders: TeamOrderEntity[];
 
-    @OneToMany(() => HoldItemEntity, (orders) => orders.team, { cascade: true, eager: true })
+    @OneToMany(() => HoldItemEntity, (orders) => orders.team, { cascade: true })
     holdItems: HoldItemEntity[];
 
     constructor(

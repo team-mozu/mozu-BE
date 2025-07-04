@@ -44,7 +44,7 @@ export class TeamWriteAdapter {
 [INPUT] -> 참여코드, 학교 이름, 팀 명   
 [OUTPUT] -> AccessToken(6시간?)
 
-{학생용} 투자 완료 API - [POST]  *매도 매수 처리 로직 상의 필요
+{학생용} 투자 완료 API - [POST]  *매도 매수 처리 로직 상의 필요하고 
 [INPUT] -> Token, 거래 내역(매도/매수 Type, 종목 id, 매도/매수 개수, 매도/매수 금액, 차수)  
 [OUTPUT] ->  없음
 선생님 클라이언트로 해당 학생 투자 완료 상태 변경  이벤트 발생

@@ -10,6 +10,9 @@ import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
 
 @Injectable()
 export class TeamReadServiceImpl implements TeamReadService {
+    private rankingCache: Map<number, { data: TeamDTO[]; timestamp: number }> = new Map();
+    private readonly CACHE_TTL = 5000; // 5초 캐시
+
     constructor(
         @Inject('repository')
         private readonly reader: TeamDomainReader,
@@ -42,10 +45,29 @@ export class TeamReadServiceImpl implements TeamReadService {
     }
 
     async getTeamRankById(teamId: number): Promise<TeamDTO[]> {
-        return await this.reader.findTeamRankById(teamId);
+        // 캐시 확인
+        const cached = this.rankingCache.get(teamId);
+        const now = Date.now();
+
+        if (cached && now - cached.timestamp < this.CACHE_TTL) {
+            return cached.data;
+        }
+
+        // 캐시가 없거나 만료된 경우 DB에서 조회
+        const teams = await this.reader.findTeamRankById(teamId);
+
+        // 캐시 업데이트
+        this.rankingCache.set(teamId, { data: teams, timestamp: now });
+
+        return teams;
     }
 
     async getTeamInvOrderById(teamId: number): Promise<TeamOrderDTO[]> {
         return await this.reader.findTeamInvOrderById(teamId);
+    }
+
+    // 캐시 무효화 메서드 (투자 완료 시 호출)
+    invalidateRankingCache(teamId: number): void {
+        this.rankingCache.delete(teamId);
     }
 }

@@ -16,12 +16,15 @@ import { EventType } from 'src/common/sse/event.type';
 import { EventTeamInvEndForm, EventTeamPartInForm } from 'src/common/sse/event.form';
 import { TeamOrderDTO } from 'src/team/common/data/team.order.dto';
 import { DateTimeService } from 'src/common/dateTime/dateTime.service';
+import { TeamReadService } from '../team.read.service';
 
 @Injectable()
 export class TeamWriteServiceImpl implements TeamWriteService {
     constructor(
         @Inject('repository')
         private readonly writer: TeamDomainWrtier,
+        @Inject('read_impl')
+        private readonly readService: TeamReadService,
         private readonly sseService: SseService,
         private readonly httpService: HttpService,
         private readonly configService: ConfigService,
@@ -113,6 +116,9 @@ export class TeamWriteServiceImpl implements TeamWriteService {
         // 모든 거래가 처리된 후 보유 주식 업데이트
         const holdItems = await this.writer.holdItemUpdateNow(teamId);
         const team = await this.writer.teamMoneyUpdate(orders, holdItems, teamId);
+
+        // 랭킹 캐시 무효화
+        this.readService.invalidateRankingCache(teamId);
 
         await this.sseService.sendToTeacher(
             classId,
