@@ -72,10 +72,10 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
         const teams = await this.typeormRepository
             .createQueryBuilder('team')
             .leftJoinAndSelect('team.class', 'class')
-            .where('team.classNum = (SELECT classNum FROM TB_CLASS_TEAM WHERE id = :teamId)', {
+            .where('team.CLASS_NUM = (SELECT CLASS_NUM FROM TB_CLASS_TEAM WHERE id = :teamId)', {
                 teamId
             })
-            .orderBy('team.totalMoney', 'DESC')
+            .orderBy('team.TOT_MONEY', 'DESC')
             .getMany();
 
         return await Promise.all(teams.map((team) => this.mapper.toTeamDomain(team)));
