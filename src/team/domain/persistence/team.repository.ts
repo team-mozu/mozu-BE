@@ -43,7 +43,8 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
                 }
             },
             order: {
-                itemId: 'ASC'
+                invDeg: 'ASC',
+                id: 'ASC'
             }
         });
 
