@@ -61,12 +61,7 @@ export class TeamReadAdapter {
     @Get('/rank')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.STUDENT])
-    async getRank(@UserID() id: string, @Res() res: any): Promise<ResponseTeamRankForm[]> {
-        // HTTP 캐싱 완전 비활성화
-        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', '0');
-
+    async getRank(@UserID() id: string): Promise<ResponseTeamRankForm[]> {
         const teams = await this.readService.getTeamRankById(+id);
 
         return Promise.all(teams.map((team) => new ResponseTeamRankForm(team, +id)));
