@@ -13,7 +13,4 @@ export interface TeamReadService {
 
     // 기관용
     getTeamInvOrderById(teamId: number): Promise<TeamOrderDTO[]>;
-
-    // 캐시 관리
-    invalidateRankingCache(teamId: number): void;
 }
