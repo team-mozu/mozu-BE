@@ -68,14 +68,19 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
     }
 
     async findTeamRankById(teamId: number): Promise<TeamDTO[]> {
-        // 단일 쿼리로 최적화: 서브쿼리를 사용하여 더 효율적으로 조회
+        // 캐싱 완전 방지를 위해 매번 새로운 쿼리 생성
         const teams = await this.typeormRepository
             .createQueryBuilder('team')
             .leftJoinAndSelect('team.class', 'class')
-            .where('team.CLASS_NUM = (SELECT CLASS_NUM FROM TB_CLASS_TEAM WHERE CLASS_TEAM_ID = :teamId)', {
-                teamId
-            })
+            .where(
+                'team.CLASS_NUM = (SELECT CLASS_NUM FROM TB_CLASS_TEAM WHERE CLASS_TEAM_ID = :teamId)',
+                {
+                    teamId
+                }
+            )
             .orderBy('team.TOT_MONEY', 'DESC')
+            .cache(false) // TypeORM 캐시 비활성화
+            .setQueryRunner(undefined) // 쿼리 러너 캐시 방지
             .getMany();
 
         return await Promise.all(teams.map((team) => this.mapper.toTeamDomain(team)));

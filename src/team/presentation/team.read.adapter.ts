@@ -61,7 +61,12 @@ export class TeamReadAdapter {
     @Get('/rank')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.STUDENT])
-    async getRank(@UserID() id: string): Promise<ResponseTeamRankForm[]> {
+    async getRank(@UserID() id: string, @Res() res: any): Promise<ResponseTeamRankForm[]> {
+        // HTTP 캐싱 완전 비활성화
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+
         const teams = await this.readService.getTeamRankById(+id);
 
         return Promise.all(teams.map((team) => new ResponseTeamRankForm(team, +id)));
@@ -73,7 +78,7 @@ export class TeamReadAdapter {
     async getClassTeam(@Param('id', ParseIntPipe) teamId: number): Promise<TeamOrderDTO[]> {
         return await this.readService.getTeamInvOrderById(teamId);
     }
-  
+
     @Get('/:id/holdItems')
     @UseGuards(JwtAuthGuard)
     @Permission([Authority.ORGAN])

@@ -37,7 +37,18 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             synchronize: true, // production 단계에서 false로 변경
             autoLoadEntities: true,
             logging: false, // 성능 향상을 위해 로깅 비활성화
-            driver: true
+            driver: true,
+            extra: {
+                // MySQL 캐싱 완전 비활성화
+                connectionLimit: 10,
+                acquireTimeout: 60000,
+                timeout: 60000,
+                charset: 'utf8mb4',
+                // 쿼리 캐시 비활성화
+                queryCache: false,
+                // 결과 캐시 비활성화
+                resultCache: false
+            }
         };
     }
 }
