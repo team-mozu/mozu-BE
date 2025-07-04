@@ -79,8 +79,6 @@ export class TeamRepository implements TeamDomainReader, TeamDomainWrtier {
                 }
             )
             .orderBy('team.TOT_MONEY', 'DESC')
-            .cache(false) // TypeORM 캐시 비활성화
-            .setQueryRunner(undefined) // 쿼리 러너 캐시 방지
             .getMany();
 
         return await Promise.all(teams.map((team) => this.mapper.toTeamDomain(team)));
