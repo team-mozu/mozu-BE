@@ -12,7 +12,7 @@ import { TeamOrderEntity } from './team.order.entity';
 import { HoldItemEntity } from './holdItem.entity';
 
 @Entity('TB_CLASS_TEAM')
-@Index('idx_class_num_total_money', ['classNum', 'totalMoney'])
+@Index('idx_class_num_total_money', ['CLASS_NUM', 'TOT_MONEY'])
 export class TeamEntity {
     @PrimaryGeneratedColumn('increment', { name: 'CLASS_TEAM_ID' })
     id: number;
